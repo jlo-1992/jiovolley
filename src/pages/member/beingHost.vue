@@ -264,21 +264,17 @@ const socialsHostedByMe = async () => {
       time: 'upcoming',
     })
     if (upcomingData.success) {
-      upcomingSocials.value =
-        upcomingData.socials ||
-        [].filter((social) => {
-          return social.host?._id === userId
-        })
+      upcomingSocials.value = (upcomingData.socials || []).filter((social) => {
+        return social.host?._id === userId
+      })
     }
     console.log('即將到來的場次:', upcomingSocials.value)
 
     const { data: pastData } = await socialService.getAll({ time: 'past' })
     if (pastData.success) {
-      pastSocials.value =
-        pastData.socials ||
-        [].filter((social) => {
-          return social.host?._id === userId
-        })
+      pastSocials.value = (pastData.socials || []).filter((social) => {
+        return social.host?._id === userId
+      })
     }
     console.log('已過期的場次:', pastSocials.value)
   } catch (error) {
@@ -300,11 +296,11 @@ const getParticipantsList = async (social) => {
 
     // 使用 filter() 方法來篩選女性球員
     femalePlayers.value = participantsList.value.filter(
-      (participant) => participant.user.gender === 'female',
+      (participant) => participant.user.gender === 'female'
     )
     // 使用 filter() 方法來篩選男性球員
     malePlayers.value = participantsList.value.filter(
-      (participant) => participant.user.gender === 'male',
+      (participant) => participant.user.gender === 'male'
     )
 
     console.log('femalePlayers', femalePlayers.value)

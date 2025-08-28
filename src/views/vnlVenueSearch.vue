@@ -303,7 +303,7 @@ const updateDisplayedVenues = () => {
       (venue) =>
         venue.name.toLowerCase().includes(searchLower) ||
         venue.address.toLowerCase().includes(searchLower) ||
-        (venue.description && venue.description.toLowerCase().includes(searchLower)),
+        (venue.description && venue.description.toLowerCase().includes(searchLower))
     )
     // 檢查搜尋結果的縣市，如果所有結果都屬於同一個縣市，就自動切換 Tab
     const citiesInResults = [...new Set(searchResults.map((v) => v.city))]

@@ -3,9 +3,10 @@
     <v-app-bar
       style="position: fixed"
       :color="isHome ? 'transparent' : '#353d42'"
-      :elevation="isHome ? 0 : 4"
+      :elevation="isHome ? 0 : 10"
       :absolute="isHome"
       :app="!isHome"
+      height="80"
     >
       <template v-if="display.smAndDown.value">
         <v-app-bar-title>
@@ -17,14 +18,20 @@
       </template>
 
       <template v-else>
+        <router-link to="/">
+          <v-img
+            width="220"
+            height="220"
+            src="../assets/images/logo-light.png"
+            id="logo"
+            class="ml-5"
+          ></v-img>
+        </router-link>
+        <v-spacer></v-spacer>
         <v-btn v-for="item in leftNavItems" :key="item.title" class="btn-appbar" :to="item.to">{{
           item.title
         }}</v-btn>
-        <v-spacer></v-spacer>
-        <router-link to="/">
-          <v-img width="150" height="150" src="../assets/images/logo-light.png" id="logo"></v-img>
-        </router-link>
-        <v-spacer></v-spacer>
+        <v-spacer class="right-section"></v-spacer>
         <v-btn v-for="item in rightNavItems" :key="item.to" class="btn-appbar" :to="item.to">{{
           item.title
         }}</v-btn>
@@ -98,10 +105,10 @@ const navItems = computed(() => [
 ])
 
 const leftNavItems = computed(() => {
-  return navItems.value.filter((item) => item.show).slice(0, 3)
+  return navItems.value.filter((item) => item.show).slice(0, 4)
 })
 const rightNavItems = computed(() => {
-  return navItems.value.filter((item) => item.show).slice(3)
+  return navItems.value.filter((item) => item.show).slice(4)
 })
 
 const logout = async () => {
@@ -134,8 +141,17 @@ const logout = async () => {
   font-family: 'Huninn', sans-serif;
 }
 
+.btn-appbar:hover {
+  background-color: #fdd000;
+  color: black;
+}
+
 .container {
   position: absolute;
   top: 0;
+}
+
+.right-section {
+  border-right: 2px solid #f1f1f1;
 }
 </style>

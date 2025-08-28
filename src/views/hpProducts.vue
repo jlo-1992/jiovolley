@@ -85,7 +85,6 @@ const productInfo = ref([
   font-size: 1.4rem;
   // font-weight: 600;
   border-radius: 30px;
-  color: white;
   letter-spacing: 5px;
 }
 

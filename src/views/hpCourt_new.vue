@@ -133,7 +133,6 @@ h1 {
 
 .btn {
   background-color: #ffd000;
-  color: white;
 }
 
 .btn-outlined {
