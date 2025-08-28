@@ -1,0 +1,74 @@
+body {
+  font-family: "Huninn", sans-serif;
+}
+
+.title {
+  font-size: 3rem;
+  color: #353d42;
+  font-weight: 700;
+  font-family: "Huninn", sans-serif;
+}
+@media (min-width: 768px) {
+  .title {
+    font-size: 4rem;
+    font-weight: 700;
+  }
+}
+
+.page-title {
+  margin-top: 30px;
+  font-size: 2.3rem;
+  color: #353d42;
+  font-weight: 700;
+  font-family: "Huninn", sans-serif;
+}
+
+.page-title-light {
+  color: #f1f1f1;
+  font-size: 2.3rem;
+  font-weight: 700;
+}
+
+.bg-dark {
+  background-color: #353d42;
+}
+
+.bg-light {
+  background-color: #f1f1f1;
+}
+
+.btn {
+  border-radius: 8px;
+  background-color: #fdd000;
+  color: black;
+  font-size: 1.1rem;
+  -webkit-box-shadow: 3px 6px 1px black;
+          box-shadow: 3px 6px 1px black;
+  border: 2px solid black;
+}
+
+.btn:hover {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transform: translate(3px, 3px);
+          transform: translate(3px, 3px);
+}
+
+.neubrutalism {
+  -webkit-box-shadow: 3px 6px 1px #353d42;
+          box-shadow: 3px 6px 1px #353d42;
+  border-radius: 8px;
+  background-color: white;
+}
+.neubrutalism :deep(.v-field) {
+  border-radius: 8px !important;
+}
+.neubrutalism :deep(.v-field__outline::before),
+.neubrutalism :deep(.v-field__outline::after) {
+  border-style: none !important;
+}
+
+.card-dialog {
+  border: 2px solid black;
+  background-color: #f1f1f1;
+}
