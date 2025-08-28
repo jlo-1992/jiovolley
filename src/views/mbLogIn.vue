@@ -433,7 +433,7 @@ const lineLogin = async () => {
     // const { data } = await userService.lineLogin()
     // LINE 登入會回傳授權網址
     console.log('準備重定向到 LINE 登入頁面')
-    window.location.href = 'http://localhost:4000/user/auth/line'
+    window.location.href = 'https://jiovolley-backend.onrender.com/user/auth/line'
   } catch (error) {
     console.error('LINE 登入錯誤:', error)
     createSnackbar({
@@ -449,7 +449,7 @@ const googleLogin = async () => {
   try {
     // LINE 登入會回傳授權網址
     console.log('準備重定向到 Google 登入頁面')
-    window.location.href = 'http://localhost:4000/user/auth/google'
+    window.location.href = 'https://jiovolley-backend.onrender.com/user/auth/google'
   } catch (error) {
     console.error('Google 登入錯誤:', error)
     createSnackbar({
