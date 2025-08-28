@@ -1,1 +1,0 @@
-import{by as t}from"./index-UDh8WMq-.js";const i={create(e){return t.apiAuth.post("/social",e)},getAll(e){return t.apiAuth.get("/social/all",{params:e})},getAvailable(){return t.api.get("/social")},getId(e){return t.api.get(`/social/${e}`)},getQrCode(e){return t.apiAuth.get(`/social/${e}/qrcode/admin`)},update(e,a){return t.apiAuth.patch(`/social/${e}`,a)}};export{i as s};
