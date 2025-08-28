@@ -193,6 +193,15 @@
       </v-row>
     </v-card>
   </v-container>
+  <v-dialog v-model="successDialog.open" persistent width="550">
+    <v-card class="card-dialog">
+      <v-card-title class="text-center mt-15">{{ successDialog.message }}</v-card-title>
+      <v-icon-btn icon="mdi-close" @click="closeDialog" class="btn-close"></v-icon-btn>
+      <v-card-actions class="mt-3 mr-5">
+        <v-btn class="btn mb-5 mr-8" @click="navigateToMember">前往會員中心</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
   <div class="lottie-overlay" v-if="isSubmitting">
     <DotLottieVue
       style="height: 500px; width: 500px"
@@ -280,6 +289,19 @@ const venueItems = computed(() => {
     }))
 })
 
+const successDialog = ref({
+  open: false,
+  message: '場次建立成功！可以到會員中心查看報名狀態喔~',
+})
+
+const navigateToMember = () => {
+  successDialog.value.open = false
+  router.push({
+    path: '/member/beingHost',
+    query: { redirect: route.fullPath },
+  })
+}
+
 const minDate = computed(() => {
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate()) // 這裡的 .getDate()+1 會得到明天的日期，如果沒有+1則為今天
@@ -350,17 +372,18 @@ const submit = handleSubmit(async (values) => {
     const { data } = await socialService.create(payload)
 
     // 成功後的提示與導向
-    createSnackbar({
-      text: '場次新增成功！',
-      snackbarProps: {
-        color: 'green',
-      },
-    })
+    // createSnackbar({
+    //   text: '場次新增成功！',
+    //   snackbarProps: {
+    //     color: 'green',
+    //   },
+    // })
 
     // 重設表單
     resetForm()
     selectedCity.value = ''
     venueStore.clearSelectedVenue()
+    successDialog.value.open = true
   } catch (error) {
     console.error('場次新增失敗：', error)
     createSnackbar({
@@ -490,6 +513,20 @@ watch(selectedCity, () => {
   :deep(.v-field__outline::after) {
     border-style: none !important;
   }
+}
+
+.btn-close {
+  background-color: #fdd000;
+  border: 2px solid black;
+  box-shadow: 2px 4px 1px black;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 8px;
+}
+.btn-close:hover {
+  box-shadow: none;
+  transform: translate(3px, 3px);
 }
 
 @media (min-width: 768px) {

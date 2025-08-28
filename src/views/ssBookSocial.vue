@@ -297,6 +297,15 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <v-dialog v-model="successDialog.open" persistent width="550">
+    <v-card class="card-dialog">
+      <v-card-title class="text-center mt-10">{{ successDialog.message }}</v-card-title>
+      <v-icon-btn icon="mdi-close" @click="closeDialog" class="btn-close"></v-icon-btn>
+      <v-card-actions class="mt-3 mr-5">
+        <v-btn class="btn" @click="navigateToMember">前往會員中心</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -329,6 +338,11 @@ const dialog = ref({
   message: '請先登入才能報名打 play 喔！',
 })
 
+const successDialog = ref({
+  open: false,
+  message: '場次報名成功！可以到會員中心查看報名狀態喔~',
+})
+
 // 新增檢查登入狀態的函數
 const checkLoginStatus = () => {
   if (!isLoggedIn.value) {
@@ -341,6 +355,14 @@ const navigateToLogin = () => {
   dialog.value.open = false
   router.push({
     path: '/logInSingUp',
+    query: { redirect: route.fullPath },
+  })
+}
+
+const navigateToMember = () => {
+  dialog.value.open = false
+  router.push({
+    path: '/member/socials',
     query: { redirect: route.fullPath },
   })
 }
@@ -429,8 +451,8 @@ const selectableDates = computed(() => {
   const dateSet = new Set(
     // 將 UTC 時間轉換為台灣本地時間，然後格式化日期
     filteredSocials.map((social) =>
-      dayjs.utc(social.startDateTime).tz('Asia/Taipei').format('YYYY-MM-DD'),
-    ),
+      dayjs.utc(social.startDateTime).tz('Asia/Taipei').format('YYYY-MM-DD')
+    )
   )
 
   return Array.from(dateSet)
@@ -528,15 +550,16 @@ const submit = async (values) => {
     const { data } = await socialParticipantService.create(socialId, values)
     console.log('API 回應:', data)
 
-    createSnackbar({
-      text: '場次報名成功！可以到會員中心查看報名狀態喔~',
-      snackbarProps: {
-        color: 'green',
-      },
-    })
+    // createSnackbar({
+    //   text: '場次報名成功！可以到會員中心查看報名狀態喔~',
+    //   snackbarProps: {
+    //     color: 'green',
+    //   },
+    // })
     resetSelection()
     venueStore.clearSelectedVenue()
     socialStore.clearSelectedSocial()
+    successDialog.value.open = true
   } catch (error) {
     console.error('場次報名失敗：', error)
     createSnackbar({
@@ -659,7 +682,7 @@ watch(
       selection.value.time = null
       console.log('日期變更，重置時段選擇')
     }
-  },
+  }
 )
 
 // 監聽選擇變化，自動展開下一個面板
@@ -669,7 +692,7 @@ watch(
     if (newVal) {
       panel.value = 'skillLevel'
     }
-  },
+  }
 )
 
 watch(
@@ -678,7 +701,7 @@ watch(
     if (newVal) {
       panel.value = 'datetime'
     }
-  },
+  }
 )
 </script>
 
@@ -827,6 +850,20 @@ iframe {
 .bg-yellow {
   background-color: #fdd000;
   box-shadow: 3px 6px 1px black;
+}
+
+.btn-close {
+  background-color: #fdd000;
+  border: 2px solid black;
+  box-shadow: 2px 4px 1px black;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 8px;
+}
+.btn-close:hover {
+  box-shadow: none;
+  transform: translate(3px, 3px);
 }
 
 @media (min-width: 768px) {
