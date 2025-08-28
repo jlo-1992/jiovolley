@@ -2,7 +2,7 @@
   <div class="pt-8 bg-light">
     <v-row justify="center">
       <v-col cols="12" md="10">
-        <v-card class="pa-16 rounded-lg">
+        <v-card class="pa-16 rounded-lg card-memberPage">
           <div>
             <div>
               <h1 class="font-weight-bold text-h4">訂單紀錄</h1>
@@ -13,8 +13,8 @@
           <v-divider class="my-4"></v-divider>
           <v-row class="mt-4 align-center">
             <v-col cols="12">
-              <v-card class="pa-4 rounded-lg">
-                <h2 class="mb-4">待取貨的訂單</h2>
+              <v-card class="pa-4 rounded-lg card-memberPage">
+                <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">待取貨的訂單</h2>
                 <v-table height="300px" fixed-header striped="even">
                   <thead>
                     <tr>
@@ -36,8 +36,8 @@
                   </tbody>
                 </v-table>
               </v-card>
-              <v-card class="pa-4 rounded-lg mt-8">
-                <h2 class="mb-4">已完成的訂單</h2>
+              <v-card class="pa-4 rounded-lg mt-8 card-memberPage">
+                <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">已完成的訂單</h2>
                 <v-table height="300px" fixed-header striped="even">
                   <thead>
                     <tr>

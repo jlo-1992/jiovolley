@@ -2,7 +2,7 @@
   <div class="pt-8 bg-light">
     <v-row justify="center">
       <v-col cols="12" md="10">
-        <v-card class="pa-16 rounded-lg">
+        <v-card class="pa-16 rounded-lg card-memberPage">
           <div>
             <div>
               <h1 class="font-weight-bold text-h4">購物車</h1>
@@ -12,7 +12,7 @@
           <v-divider class="my-4"></v-divider>
           <v-row class="mt-4 align-center">
             <v-col cols="12">
-              <v-card class="pa-4 rounded-lg">
+              <v-card class="pa-4 rounded-lg card-memberPage">
                 <!-- <h2 class="mb-4">待出貨的訂單</h2> -->
                 <v-table height="450" fixed-header striped="even">
                   <thead>

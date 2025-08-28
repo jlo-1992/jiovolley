@@ -2,7 +2,7 @@
   <div class="pt-8 bg-light">
     <v-row justify="center">
       <v-col cols="12" md="10">
-        <v-card class="pa-16 rounded-lg">
+        <v-card class="pa-16 rounded-lg card-memberPage">
           <v-form @submit.prevent="submitUpdate">
             <div>
               <div>
@@ -25,16 +25,15 @@
                   accept="image/*"
                 />
                 <v-icon-btn
-                  variant="tonal"
-                  style="background-color: #f1f1f1"
                   icon="mdi-pencil"
-                  class="mt-15 ml-n7"
+                  class="mt-15 ml-n7 btn"
                   @click="triggerFileInput"
+                  rounded="circle"
                 ></v-icon-btn>
               </v-col>
               <v-col cols="12" sm="9" md="9">
-                <v-card class="pa-4 rounded-lg">
-                  <h3 class="text-h6 font-weight-bold mb-4">一般資訊</h3>
+                <v-card class="pa-6 rounded-lg card-memberPage">
+                  <h3 class="font-weight-bold mb-4" style="font-size: 1.3rem">一般資訊</h3>
                   <v-row>
                     <v-col cols="12" sm="6">
                       <v-text-field
@@ -44,6 +43,7 @@
                         variant="outlined"
                         hide-details
                         :rules="[rules.required]"
+                        class="neubrutalism"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -55,6 +55,7 @@
                         hide-details
                         :items="['女性', '男性']"
                         :rules="[rules.required]"
+                        class="neubrutalism"
                       ></v-select>
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -65,6 +66,7 @@
                         variant="outlined"
                         hide-details
                         :rules="[rules.required]"
+                        class="neubrutalism"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -82,13 +84,14 @@
                           'D 排球初心者',
                         ]"
                         :rules="[rules.required]"
+                        class="neubrutalism"
                       ></v-select>
                     </v-col>
                   </v-row>
                   <v-btn class="mt-4 btn" type="submit">更新球員資料</v-btn>
                 </v-card>
-                <v-card class="pa-4 rounded-lg mt-8">
-                  <h3 class="text-h6 font-weight-bold mb-4">機密資訊</h3>
+                <v-card class="pa-6 rounded-lg mt-8 card-memberPage">
+                  <h3 class="font-weight-bold mb-4" style="font-size: 1.3rem">機密資訊</h3>
                   <v-row>
                     <v-col cols="12" sm="4">
                       <v-text-field
@@ -99,8 +102,9 @@
                         variant="outlined"
                         hide-details
                         readonly
+                        class="neubrutalism"
                       ></v-text-field>
-                      <v-btn class="mt-4" color="#353d42" variant="outlined" type="submit" block
+                      <v-btn class="mt-4 btn" variant="outlined" type="submit" block
                         >更改密碼</v-btn
                       >
                     </v-col>
@@ -112,8 +116,9 @@
                         variant="outlined"
                         hide-details
                         readonly
+                        class="neubrutalism"
                       ></v-text-field>
-                      <v-btn class="mt-4" color="#353d42" type="submit" variant="outlined" block
+                      <v-btn class="mt-4 btn" type="submit" variant="outlined" block
                         >更改 Line ID</v-btn
                       >
                     </v-col>
@@ -125,8 +130,9 @@
                         variant="outlined"
                         hide-details
                         readonly
+                        class="neubrutalism"
                       ></v-text-field>
-                      <v-btn class="mt-4" color="#353d42" type="submit" variant="outlined" block
+                      <v-btn class="mt-4 btn" type="submit" variant="outlined" block
                         >更改 Google ID</v-btn
                       >
                     </v-col>
