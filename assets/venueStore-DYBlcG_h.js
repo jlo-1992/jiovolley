@@ -1,0 +1,1 @@
+import{bo as n,r as l}from"./index-CAC0_XLU.js";const o=n("venue",()=>{const e=l(null);return{selectedVenue:e,setSelectedVenue:t=>{e.value=t},clearSelectedVenue:()=>{e.value=null}}},{persist:{key:"jiovolley-venue",pick:["selectedVenue"]}});export{o as u};
