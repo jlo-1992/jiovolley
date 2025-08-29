@@ -112,7 +112,15 @@ h1 {
   display: none;
 }
 
+.card {
+  transition: all 0.3s ease-in-out;
+}
+
 .card:hover {
+  box-shadow: 15px 15px 1px #fdd000;
+  // box-shadow: none;
+  // transform: translate(15px, 15px);
+
   .overlay-text {
     height: 205px;
   }

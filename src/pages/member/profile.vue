@@ -12,7 +12,7 @@
             </div>
 
             <v-divider class="my-4"></v-divider>
-            <v-row class="align-start">
+            <v-row>
               <v-col cols="12" md="2" class="mt-16 ml-14">
                 <v-avatar size="100">
                   <v-img src="../../assets/images/passing.png" class="avatar-img" cover></v-img>
@@ -86,6 +86,18 @@
                         :rules="[rules.required]"
                         class="neubrutalism"
                       ></v-select>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="你的專屬球場勝利語"
+                        v-model="quote.value.value"
+                        :error-messages="quote.errorMessage.value"
+                        variant="outlined"
+                        hide-details
+                        :rules="[rules.required]"
+                        class="neubrutalism"
+                      >
+                      </v-text-field>
                     </v-col>
                   </v-row>
                   <v-btn class="mt-4 btn" type="submit">更新球員資料</v-btn>
@@ -204,6 +216,7 @@ const skillLevel = useField('skillLevel')
 const password = useField('password')
 const line_uid = useField('line_uid')
 const google_uid = useField('google_uid')
+const quote = useField('quote')
 const databaseAvatarSrc = ref('')
 const previewAvatarSrc = ref(null)
 const selectedFile = ref(null)
@@ -216,6 +229,7 @@ const getUserProfile = async () => {
   try {
     const { data } = await userService.profile()
     const userInfo = data.user
+    console.log(userInfo._id)
     setValues({
       name: userInfo.name,
       gender: userInfo.gender,
@@ -224,6 +238,7 @@ const getUserProfile = async () => {
       password: userInfo.password,
       line_uid: userInfo.line_uid,
       google_uid: userInfo.google_uid,
+      quote: userInfo.quote,
     })
     // 設定頭像 URL
     databaseAvatarSrc.value = userInfo.avatar

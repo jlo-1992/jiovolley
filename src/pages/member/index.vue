@@ -1,34 +1,22 @@
 <template>
   <v-container class="bg-dark">
     <v-card class="bg-light pt-10 mt-1" style="border: 2px solid black">
-      <v-row justify="center">
-        <v-col cols="11" md="6">
-          <v-btn
-            variant="outlined"
-            class="ml-7 btn-hover"
-            rounded="0"
-            style="border: 2px solid black"
-            to="/"
-            size="40"
+      <v-row>
+        <v-col cols="4" md="6">
+          <v-btn variant="outlined" class="ml-7 btn-hover" rounded="0" to="/" size="40"
             ><v-icon>mdi-home</v-icon></v-btn
           >
         </v-col>
-        <v-col cols="11" md="6" class="d-flex">
+        <v-col cols="8" md="6" class="d-flex">
           <v-text-field
             prepend-inner-icon="mdi-magnify"
             density="compact"
             placeholder="請輸入關鍵字"
             hide-details
             style="background-color: #f1f1f1; border: 2px solid black"
-            class="mr-10"
+            class="mr-md-10 mr-3"
           ></v-text-field>
-          <v-btn
-            class="mr-2 btn-hover"
-            variant="outlined"
-            rounded="0"
-            style="border: 2px solid black"
-            to="/"
-            size="40"
+          <v-btn class="mr-md-2 mr-1 btn-hover" variant="outlined" rounded="0" to="/" size="40"
             ><v-icon>mdi-bell</v-icon></v-btn
           >
           <v-avatar
@@ -39,93 +27,86 @@
           ></v-avatar>
         </v-col>
       </v-row>
-      <v-row justify="center">
-        <v-col cols="11" md="6">
-          <h1 class="card-title mb-5 ml-7">球員檔案</h1>
-          <v-card class="pa-4 card-memberPage mb-5 ml-7">
+      <v-row>
+        <v-col cols="11" md="7">
+          <h1 class="card-title mb-3 ml-7">球員檔案 Player Information</h1>
+          <v-card class="pa-5 card-memberPage mb-5 ml-7" color="#fdd000">
             <v-row>
-              <v-col cols="12">
-                <v-img class="ml-5" src="@/assets/images/passing.png" width="100"></v-img>
+              <v-col cols="4">
+                <v-img
+                  style="border: 2px solid black"
+                  src="@/assets/images/userProfile/ryujji.jpg"
+                  height="320"
+                  width="250"
+                  class="mt-1"
+                  cover
+                ></v-img>
               </v-col>
-              <v-col cols="2" class="ml-6">球員姓名：</v-col>
-              <v-col cols="8">{{ userInfo.name }}</v-col>
-              <v-col cols="2" class="ml-6">球技程度：</v-col>
-              <v-col cols="8">{{ userInfo.skillLevel }}</v-col>
-              <v-col cols="2" class="ml-6">性別：</v-col>
-              <v-col cols="8">{{ userInfo.gender }}</v-col>
-              <v-col cols="2" class="ml-6">E-mail：</v-col>
-              <v-col cols="8">{{ userInfo.email }}</v-col>
+              <v-col cols="8" class="ml-n5">
+                <v-col cols="12">
+                  <div class="d-flex justify-space-between">
+                    <h1 class="font-weight-bold mt-n1 mb-1" style="font-size: 2rem">
+                      {{ userInfo.name }}
+                    </h1>
+                    <v-btn
+                      to="/member/profile"
+                      rounded="0"
+                      size="35"
+                      variant="outlined"
+                      class="btn-hover mt-1"
+                      ><v-icon icon="mdi-pencil"></v-icon
+                    ></v-btn>
+                  </div>
+                  <h3>{{ userInfo.gender }}．{{ userInfo.skillLevel }}．</h3>
+                  <h3>{{ userInfo.email }}</h3>
+                  <div class="d-flex justify-space-between mt-5">
+                    <div>
+                      <v-card class="card-border mr-n4" width="130" rounded="0">
+                        <v-card-title class="font-weight-bold text-h5">{{
+                          socialsAttendedNum
+                        }}</v-card-title>
+                        <v-card-text>打過的 play </v-card-text>
+                      </v-card>
+                    </div>
+                    <div>
+                      <v-card class="card-border mr-n4" width="130" rounded="0">
+                        <v-card-title class="font-weight-bold text-h5">{{
+                          socialsHostedNum
+                        }}</v-card-title>
+                        <v-card-text>揪過的 play </v-card-text>
+                      </v-card>
+                    </div>
+                    <div>
+                      <v-card class="card-border mr-n4" width="130" rounded="0">
+                        <v-card-title class="font-weight-bold text-h5">{{ joinAgo }}</v-card-title>
+                        <v-card-text>加入揪排咖 </v-card-text>
+                      </v-card>
+                    </div>
+                    <div>
+                      <v-card class="card-border" width="130" rounded="0">
+                        <v-card-title class="font-weight-bold text-h5">{{ joinAgo }}</v-card-title>
+                        <v-card-text>加入揪排咖 </v-card-text>
+                      </v-card>
+                    </div>
+                  </div>
+                  <div>
+                    <h1 class="font-weight-bold mt-6" style="font-size: 1.3rem">
+                      {{ userInfo.quote }}
+                    </h1>
+                  </div>
+                </v-col>
+              </v-col>
             </v-row>
-
-            <v-card-text class="pt-4 personal-info"> </v-card-text>
           </v-card>
-          <h1 class="card-title mb-5 mt-10 ml-7">我的訂單</h1>
-          <v-card class="pa-4 card-memberPage ml-7"> </v-card>
         </v-col>
 
-        <v-col cols="11" md="6">
-          <div class="mb-5">
-            <div class="card-title mb-5">我的出席統計</div>
-            <v-card class="pa-6 card-memberPage mr-7">
-              <v-card-title class="d-flex align-center justify-space-between">
-                <v-select
-                  v-model="selectedGroup"
-                  :items="['Transactions', 'Other']"
-                  density="compact"
-                  max-width="200"
-                  variant="solo-filled"
-                  flat
-                  hide-details
-                  single-line
-                ></v-select>
-              </v-card-title>
-
-              <v-pie
-                :items="currentItems"
-                :legend="{ position: $vuetify.display.mdAndUp ? 'right' : 'bottom' }"
-                :tooltip="{ subtitleFormat: '[value]%' }"
-                class="pa-3 mt-3 justify-center"
-                gap="2"
-                inner-cut="70"
-                item-key="id"
-                rounded="2"
-                size="200"
-                animation
-                hide-slice
-                reveal
-              >
-                <template v-slot:center>
-                  <div class="text-center">
-                    <div class="card-title text-h5">出席率</div>
-                    <div class="opacity-70 text-h4 mt-1 mb-n1">90%</div>
-                  </div>
-                </template>
-
-                <template v-slot:legend="{ items, toggle, isActive }">
-                  <v-list class="py-0 mb-n5 mb-md-0 bg-transparent" density="compact" width="150">
-                    <v-list-item
-                      v-for="item in items"
-                      :key="item.key"
-                      :class="['my-1', { 'opacity-40': !isActive(item) }]"
-                      :title="item.title"
-                      rounded="xl"
-                      link
-                      @click="toggle(item)"
-                    >
-                      <template v-slot:prepend>
-                        <v-avatar :color="item.color" :size="16"></v-avatar>
-                      </template>
-                      <template v-slot:append>
-                        <div class="font-weight-bold">{{ item.value }}%</div>
-                      </template>
-                    </v-list-item>
-                  </v-list>
-                </template>
-              </v-pie>
-            </v-card>
-          </div>
-          <h1 class="card-title mb-5 mt-10">我的排球行事曆</h1>
-          <v-card class="pa-4 card-memberPage mr-7" style="overflow-y: scroll">
+        <v-col cols="11" md="5">
+          <h1 class="card-title mt-1 mb-2 ml-7 ml-md-0">排球行事曆 Events Calender</h1>
+          <v-card
+            class="pa-4 card-memberPage mr-md-7 ml-7 ml-md-0"
+            height="368"
+            style="overflow-y: scroll"
+          >
             <v-row class="fill-height">
               <v-col>
                 <v-sheet height="350">
@@ -142,63 +123,67 @@
           </v-card>
         </v-col>
 
-        <v-col cols="12" md="5">
-          <v-row>
-            <v-col cols="12">
-              <div class="h-0">
-                <svg height="0" version="1.1" width="0" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern
-                      id="pattern-0"
-                      height="20"
-                      patternTransform="rotate(145) scale(.2)"
-                      patternUnits="userSpaceOnUse"
-                      width="20"
-                    >
-                      <path
-                        d="M0 10h20zm0 20h20zm0 20h20zm0 20h20z"
-                        fill="none"
-                        stroke="rgb(var(--v-theme-surface))"
-                        stroke-width="3"
-                      />
-                    </pattern>
-                  </defs>
-                </svg>
-              </div>
-            </v-col>
+        <v-col cols="12" md="4">
+          <div class="card-title mb-2 ml-7">出席統計 Presence Rate</div>
+          <v-card class="card-memberPage mr-10 mr-md-7 ml-7 mb-7" height="225">
+            <v-pie
+              :items="currentItems"
+              :legend="{ position: $vuetify.display.mdAndUp ? 'right' : 'bottom' }"
+              :tooltip="{ subtitleFormat: '[value]%' }"
+              class="justify-center mt-5"
+              inner-cut="70"
+              item-key="id"
+              rounded="2"
+              size="180"
+              animation
+              hide-slice
+              reveal
+            >
+              <template v-slot:center>
+                <div class="text-center">
+                  <div class="card-title text-h5">出席率</div>
+                  <div class="opacity-70 text-h4 mt-1 mb-n1">90%</div>
+                </div>
+              </template>
 
-            <!-- <v-col cols="12" md="12">
-            <v-card class="pa-4 card">
-              <v-card-title class="card-title">我的購物車</v-card-title>
-              <swiper
-                effect="coverflow"
-                :grabCursor="true"
-                :centeredSlides="true"
-                :slidesPerView="'auto'"
-                :coverflowEffect="{
-                  rotate: 50,
-                  stretch: 0,
-                  depth: 100,
-                  modifier: 1,
-                  slideShadows: true,
-                }"
-                :pagination="true"
-                :modules="modules"
-                class="mySwiper"
-              >
-                <swiper-slide
-                  ><img src="https://swiperjs.com/demos/images/nature-1.jpg" /></swiper-slide
-                ><swiper-slide
-                  ><img src="https://swiperjs.com/demos/images/nature-2.jpg" /></swiper-slide
-                ><swiper-slide
-                  ><img src="https://swiperjs.com/demos/images/nature-3.jpg" /></swiper-slide
-                ><swiper-slide
-                  ><img src="https://swiperjs.com/demos/images/nature-4.jpg"
-                /></swiper-slide>
-              </swiper>
-            </v-card>
-          </v-col> -->
-          </v-row>
+              <template v-slot:legend="{ items, toggle, isActive }">
+                <v-list class="py-0 mb-n5 mb-md-0 bg-transparent" density="compact" width="150">
+                  <v-list-item
+                    v-for="item in items"
+                    :key="item.key"
+                    :class="['my-1', { 'opacity-40': !isActive(item) }]"
+                    :title="item.title"
+                    rounded="xl"
+                    link
+                  >
+                    <template v-slot:prepend>
+                      <v-avatar :color="item.color" :size="16"></v-avatar>
+                    </template>
+                    <template v-slot:append>
+                      <div class="font-weight-bold">{{ item.value }}%</div>
+                    </template>
+                  </v-list-item>
+                </v-list>
+              </template>
+            </v-pie>
+          </v-card>
+        </v-col>
+        <v-col cols="11" md="8" class="ml-md-n7 ml-7 mr-7 mb-8 mb-md-0">
+          <h1 class="card-title mb-2">收藏的球場 Favorite Courts</h1>
+          <swiper
+            :slidesPerView="'4'"
+            :navigation="true"
+            :modules="modules"
+            :space-between="220"
+            class="mySwiper"
+          >
+            <swiper-slide v-for="(venue, idx) in favoriteVenues" :key="idx">
+              <v-card class="card-memberPage card-favoriteVenues" width="300" height="220">
+                <v-img :src="venue.imageUrl" class="fill-height img-favoriteVenues" cover></v-img>
+                <h2 class="venueName">{{ venue.name }}</h2>
+              </v-card>
+            </swiper-slide>
+          </swiper>
         </v-col>
       </v-row>
     </v-card>
@@ -207,16 +192,30 @@
 
 <script setup>
 import { useDisplay, useDate } from 'vuetify'
-import { computed, onMounted, ref, shallowRef, toRef } from 'vue'
+import { onMounted, ref, shallowRef, toRef } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
-import 'swiper/css/effect-coverflow'
-import 'swiper/css/pagination'
-import { EffectCoverflow, Pagination } from 'swiper/modules'
+import 'swiper/css/navigation'
+import { Navigation } from 'swiper/modules'
 import userService from '@/services/userService'
+import venueService from '@/services/venueService'
+import socialService from '@/services/socialService'
+import socialParticipantService from '@/services/socialParticipantService'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/zh-tw'
+import { set } from '@vueuse/core'
 
-const modules = [EffectCoverflow, Pagination]
+dayjs.extend(relativeTime)
+dayjs.locale('zh-tw')
+
+const modules = [Navigation]
 const display = useDisplay()
+let joinAgo = ref('')
+let socialsHostedNum = ref(0)
+let socialsAttendedNum = ref(0)
+const favoriteVenues = ref([])
+const defaultVenueImage = ref('@/assets/images/gabi hitting.jpg.jpg')
 
 // 我的出席統計
 const selectedGroup = shallowRef('Transactions')
@@ -245,7 +244,7 @@ const events = ref([])
 const colors = ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1']
 // 預計改成傳入的球場名稱
 const names = ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party']
-const userInfo = ref([])
+const userInfo = ref({})
 
 function fetchEvents({ start, end }) {
   const _events = []
@@ -275,13 +274,45 @@ function rnd(a, b) {
 
 const getUserInfo = async () => {
   try {
-    const { data } = await userService.profile()
-    if (data) {
-      userInfo.value = data.user
-      console.log('使用者資料取得成功', userInfo.value)
+    // 使用者資料
+    const { data: userData } = await userService.profile()
+    if (!userData || !userData.user) {
+      console.log('API 回傳資料格式不正確或無使用者資料', userData)
+      return
+    }
+    userInfo.value = userData.user
+    joinAgo.value = dayjs(userInfo.value.createdAt).fromNow()
+
+    // 主揪的場次
+    const { data: socialData } = await socialService.getAll()
+    if (socialData && socialData.socials) {
+      const socialHostedByMe = socialData.socials.filter(
+        (social) => social.host?._id === userInfo.value._id
+      )
+      socialsHostedNum.value = socialHostedByMe.length
     } else {
-      userInfo.value = []
-      console.log('API 回傳資料格式不正確', data)
+      console.log('API 回傳活動資料格式不正確', socialData)
+    }
+
+    // 參與的場次
+    const { data: myParticipationsData } = await socialParticipantService.getMyParticipations()
+    if (myParticipationsData && myParticipationsData.myParticipations) {
+      socialsAttendedNum.value = myParticipationsData.myParticipations.length
+    } else {
+      console.log('API 回傳參與活動資料格式不正確', myParticipationsData)
+    }
+
+    // 球場照片
+    const { data: venueData } = await venueService.getAvailable()
+    if (venueData && venueData.venues && userInfo.value.favoriteVenues) {
+      const userFavoriteIds = new Set(userInfo.value.favoriteVenues)
+      favoriteVenues.value = venueData.venues
+        .filter((venue) => userFavoriteIds.has(venue._id))
+        .map((venue) => {
+          const imageUrl =
+            venue.images && venue.images.length > 0 ? venue.images[0] : defaultVenueImage.value
+          return { ...venue, imageUrl }
+        })
     }
   } catch (error) {
     console.error('使用者資料取得失敗:', error)
@@ -299,22 +330,8 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.name {
-  // font-family: 'Cooper Black', sans-serif;
-  font-family: 'Huninn', sans-serif;
-  color: vars.$primary-color;
-  font-weight: 700;
-  margin-left: 15px;
-}
-
-.card {
-  // font-family: 'Cooper Black', sans-serif;
-  font-family: 'Huninn', sans-serif;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 2px 2px 5px 3px lightgray;
-  margin-left: 15px;
-  margin-right: 15px;
+.bg-dark {
+  min-height: 100vh;
 }
 
 .card-title {
@@ -323,22 +340,51 @@ onMounted(() => {
   font-size: 1.8rem;
 }
 
-.personal-info {
-  font-size: 1.3rem;
-  line-height: 2;
+.btn-hover {
+  border: 2px solid black;
+  background-color: white;
 }
 
 .btn-hover:hover {
   background-color: #fdd000;
 }
 
-@media (min-width: 768px) {
-  .name {
-    margin-left: 0px;
-  }
-  .card {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
+.card-border {
+  border: 2px solid black;
+  background-color: rgba(255, 255, 255, 0.575);
+}
+
+.card-favoriteVenues {
+  position: relative;
+}
+
+.venueName {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: black;
+  background-color: white;
+  padding: 5px 10px;
+  white-space: nowrap;
+  border-radius: 8px;
+}
+.card-favoriteVenues:hover .venueName {
+  box-shadow: 2px 4px 1px black;
+}
+
+.img-favoriteVenues {
+  transition: 0.5s;
+}
+
+.card-favoriteVenues:hover .img-favoriteVenues {
+  transform: scale(1.3);
+}
+</style>
+
+<style>
+.mySwiper .swiper-button-prev,
+.mySwiper .swiper-button-next {
+  color: white;
 }
 </style>
