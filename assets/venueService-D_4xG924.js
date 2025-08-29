@@ -1,0 +1,1 @@
+import{by as t}from"./index-Dm7nCjjk.js";const a={create(e){return t.apiAuth.post("/venue",e)},getAllAdmin(){return t.apiAuth.get("/venue/all")},getAvailable(){return t.api.get("/venue")},getId(e){return t.api.get("/venue/"+e)},update(e,r){return t.apiAuth.patch(`/venue/${e}`,r)}};export{a as v};
