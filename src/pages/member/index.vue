@@ -178,7 +178,12 @@
             class="mySwiper"
           >
             <swiper-slide v-for="(venue, idx) in favoriteVenues" :key="idx">
-              <v-card class="card-memberPage card-favoriteVenues" width="300" height="220">
+              <v-card
+                class="card-memberPage card-favoriteVenues"
+                width="300"
+                height="220"
+                :to="`/venueSingle/${venue._id}`"
+              >
                 <v-img :src="venue.imageUrl" class="fill-height img-favoriteVenues" cover></v-img>
                 <h2 class="venueName">{{ venue.name }}</h2>
               </v-card>
@@ -356,6 +361,7 @@ onMounted(() => {
 
 .card-favoriteVenues {
   position: relative;
+  cursor: pointer;
 }
 
 .venueName {
@@ -363,14 +369,14 @@ onMounted(() => {
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
-  color: black;
-  background-color: white;
+  color: white;
+  background-color: vars.$primary-color;
   padding: 5px 10px;
   white-space: nowrap;
   border-radius: 8px;
 }
 .card-favoriteVenues:hover .venueName {
-  box-shadow: 2px 4px 1px black;
+  box-shadow: 2px 4px 1px #fdd000;
 }
 
 .img-favoriteVenues {
