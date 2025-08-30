@@ -29,14 +29,19 @@
             <div class="overlay-text">
               <div class="venueName-wrapper d-flex align-center">
                 <h1 class="venueName">{{ venue.name }}</h1>
-                <ToggleFavoriteBtn size="38" variant="tonal" class="mt-2 ml-2" :venue="venue" />
+                <ToggleFavoriteBtn
+                  size="38"
+                  :icon="isFavorite(venue._id) ? 'mdi-heart' : 'mdi-heart-outline'"
+                  class="mt-2 ml-2"
+                  :venue="venue"
+                />
                 <v-icon-btn
                   icon="mdi-pencil"
                   size="38"
-                  variant="tonal"
+                  variant="default"
                   color="#fdd000"
                   @click="openDialog(venue)"
-                  class="edit-btn mt-2 ml-2"
+                  class="edit-btn"
                 >
                 </v-icon-btn>
               </div>
@@ -122,14 +127,19 @@
               <h1 class="venueName">
                 {{ venue.name }}
               </h1>
-              <ToggleFavoriteBtn variant="tonal" size="38" class="mt-3 ml-3" :venue="venue" />
+              <ToggleFavoriteBtn
+                size="38"
+                :icon="isFavorite(venue._id) ? 'mdi-heart' : 'mdi-heart-outline'"
+                class="mt-1 ml-1"
+                :venue="venue"
+              />
               <v-icon-btn
                 icon="mdi-pencil"
                 size="38"
-                variant="tonal"
+                variant="default"
                 color="#fdd000"
                 @click="openDialog(venue)"
-                class="mt-3 ml-3 edit-btn"
+                class="edit-btn"
               >
               </v-icon-btn>
             </div>
@@ -374,6 +384,12 @@ const user = useUserStore()
 const venue = ref({})
 const lastUpdateByName = ref('')
 const isLoggedIn = computed(() => user.isLoggedIn)
+const isFavorite = (venueId) => {
+  if (!user.isLoggedIn || !user.favoriteVenues) {
+    return false
+  }
+  return user.favoriteVenues.includes(venueId)
+}
 const bannerImg = ref(null)
 const enabled = ref(false)
 const dialog = ref({
@@ -767,9 +783,7 @@ h2 {
   box-shadow: 10px 10px 1px black;
   overflow: hidden;
   cursor: pointer;
-  transition:
-    transform 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .line-clamp {

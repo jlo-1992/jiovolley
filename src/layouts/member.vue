@@ -8,14 +8,12 @@
       class="drawer"
     >
       <v-list nav>
-        <v-list-item
-          prepend-avatar="../assets/images/passing.png"
-          class="font-weight-bold text-h6 mt-3"
-          style="font-family: 'Huninn', sans-serif"
-          >{{ userName }}</v-list-item
-        >
+        <v-list-item>
+          <router-link to="/">
+            <v-img src="@/assets/images/logo-light.png" class="mt-10 mx-auto" width="180"></v-img>
+          </router-link>
+        </v-list-item>
       </v-list>
-      <v-divider></v-divider>
 
       <v-list nav>
         <v-list-item

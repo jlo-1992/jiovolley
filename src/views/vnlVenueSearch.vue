@@ -93,7 +93,10 @@
                         >
                           <div class="venue-row">
                             <div class="venue-name">{{ venue.name }}</div>
-                            <ToggleFavoriteBtn :venue="venue" class="ml-n3" />
+                            <ToggleFavoriteBtn
+                              :venue="venue"
+                              :icon="isFavorite(venue._id) ? 'mdi-heart' : 'mdi-heart-outline'"
+                            />
                           </div>
                           <div class="venue-row">
                             <v-icon>mdi-map-marker</v-icon>
@@ -117,7 +120,11 @@
                         >
                           <div class="venue-row">
                             <div class="venue-name">{{ venue.name }}</div>
-                            <ToggleFavoriteBtn :venue="venue" class="ml-n3" />
+                            <ToggleFavoriteBtn
+                              :venue="venue"
+                              class="ml-n3"
+                              :icon="isFavorite(venue._id) ? 'mdi-heart' : 'mdi-heart-outline'"
+                            />
                           </div>
                           <div class="venue-row">
                             <v-icon>mdi-map-marker</v-icon>
@@ -214,6 +221,12 @@ import ToggleFavoriteBtn from '@/components/ToggleFavoriteBtn.vue'
 
 const user = useUserStore()
 const isLoggedIn = computed(() => user.isLoggedIn)
+const isFavorite = (venueId) => {
+  if (!user.isLoggedIn || !user.favoriteVenues) {
+    return false
+  }
+  return user.favoriteVenues.includes(venueId)
+}
 const router = useRouter()
 const route = useRoute()
 const display = useDisplay()

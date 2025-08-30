@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="bg-black">
+  <v-container fluid class="bg-light">
     <v-row>
       <v-col cols="12" md="12" class="mb-md-5 ml-md-3 d-flex justify-space-between">
         <h1 class="page-title">探索各地特色球場</h1>
@@ -112,8 +112,23 @@ h1 {
   display: none;
 }
 
+.btn {
+  position: absolute; // 絕對定位
+  bottom: 15px; // 距離底部 20px
+  left: 28%; // 從左邊開始 50%
+  transform: translateX(-50%); // 往左平移自身寬度的一半，實現水平置中
+  // 其餘按鈕樣式
+}
+
+.btn:hover {
+  bottom: 12px; // 距離底部 20px
+  left: 29%;
+}
+
 .card {
   transition: all 0.3s ease-in-out;
+  position: relative;
+  border: 3px solid black;
 }
 
 .card:hover {
@@ -139,10 +154,6 @@ h1 {
   border-color: #ffd000 !important; // 強制覆蓋 Vuetify 的預設顏色
 }
 
-.btn {
-  background-color: #ffd000;
-}
-
 .btn-outlined {
   border: 2px solid white;
   color: white;
@@ -160,12 +171,6 @@ h1 {
   border: 2px solid #ffd000;
   transform: translate(5px, 5px);
   box-shadow: none;
-}
-
-.btn:hover {
-  background-color: white;
-  border: 3px solid #ffd000;
-  color: #ffd000;
 }
 
 @media (min-width: 768px) {

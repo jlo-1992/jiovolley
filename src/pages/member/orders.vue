@@ -1,70 +1,66 @@
 <template>
-  <div class="pt-8 bg-light">
-    <v-row justify="center">
-      <v-col cols="12" md="10">
-        <v-card class="pa-16 rounded-lg card-memberPage">
-          <div>
-            <div>
-              <h1 class="font-weight-bold text-h4">訂單紀錄</h1>
-              <v-divider :thickness="2" opacity="20" class="mt-5"></v-divider>
-            </div>
-          </div>
+  <v-container class="bg-dark">
+    <v-card class="mt-1 pa-16 card-memberPage">
+      <div>
+        <div>
+          <h1 class="font-weight-bold text-h4">訂單紀錄</h1>
+          <v-divider :thickness="2" opacity="20" class="mt-5"></v-divider>
+        </div>
+      </div>
 
-          <v-divider class="my-4"></v-divider>
-          <v-row class="mt-4 align-center">
-            <v-col cols="12">
-              <v-card class="pa-4 rounded-lg card-memberPage">
-                <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">待取貨的訂單</h2>
-                <v-table height="300px" fixed-header striped="even">
-                  <thead>
-                    <tr>
-                      <th class="text-left">訂單編號</th>
-                      <th class="text-left">品項及數量</th>
-                      <th class="text-left">總價格</th>
-                      <th class="text-left">狀態</th>
-                      <th class="text-left">備註</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(social, idx) in socials_upcoming" :key="idx">
-                      <td>{{ social.court }}</td>
-                      <td>{{ social.time }}</td>
-                      <td>{{ social.fee }}</td>
-                      <td>{{ social.host }}</td>
-                      <td>{{ social.status }}</td>
-                    </tr>
-                  </tbody>
-                </v-table>
-              </v-card>
-              <v-card class="pa-4 rounded-lg mt-8 card-memberPage">
-                <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">已完成的訂單</h2>
-                <v-table height="300px" fixed-header striped="even">
-                  <thead>
-                    <tr>
-                      <th class="text-left">訂單編號</th>
-                      <th class="text-left">品項及數量</th>
-                      <th class="text-left">總價格</th>
-                      <th class="text-left">狀態</th>
-                      <th class="text-left">備註</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(social, idx) in socials_past" :key="idx">
-                      <td>{{ social.court }}</td>
-                      <td>{{ social.time }}</td>
-                      <td>{{ social.fee }}</td>
-                      <td>{{ social.host }}</td>
-                      <td>{{ social.status }}</td>
-                    </tr>
-                  </tbody>
-                </v-table>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-  </div>
+      <v-divider class="my-4"></v-divider>
+      <v-row class="mt-4 align-center">
+        <v-col cols="12">
+          <v-card class="pa-4 rounded-lg card-memberPage">
+            <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">待取貨的訂單</h2>
+            <v-table height="300px" fixed-header striped="even">
+              <thead>
+                <tr>
+                  <th class="text-left">訂單編號</th>
+                  <th class="text-left">品項及數量</th>
+                  <th class="text-left">總價格</th>
+                  <th class="text-left">狀態</th>
+                  <th class="text-left">備註</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(social, idx) in socials_upcoming" :key="idx">
+                  <td>{{ social.court }}</td>
+                  <td>{{ social.time }}</td>
+                  <td>{{ social.fee }}</td>
+                  <td>{{ social.host }}</td>
+                  <td>{{ social.status }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-card>
+          <v-card class="pa-4 rounded-lg mt-8 card-memberPage">
+            <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">已完成的訂單</h2>
+            <v-table height="300px" fixed-header striped="even">
+              <thead>
+                <tr>
+                  <th class="text-left">訂單編號</th>
+                  <th class="text-left">品項及數量</th>
+                  <th class="text-left">總價格</th>
+                  <th class="text-left">狀態</th>
+                  <th class="text-left">備註</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(social, idx) in socials_past" :key="idx">
+                  <td>{{ social.court }}</td>
+                  <td>{{ social.time }}</td>
+                  <td>{{ social.fee }}</td>
+                  <td>{{ social.host }}</td>
+                  <td>{{ social.status }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-container>
 </template>
 
 <script setup>
@@ -190,6 +186,9 @@ const socials_past = [
 </script>
 
 <style scoped lang="scss">
+.bg-dark {
+  min-height: 100vh;
+}
 h1 {
   font-family: 'Huninn', sans-serif;
 }
@@ -200,9 +199,5 @@ h3 {
 
 th {
   font-size: 1.2rem;
-}
-
-.bg-light {
-  padding-bottom: 155px;
 }
 </style>

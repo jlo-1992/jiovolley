@@ -1,11 +1,21 @@
 <template>
   <v-container class="bg-dark">
-    <v-card class="bg-light pt-10 mt-1" style="border: 2px solid black">
+    <v-card class="bg-light pt-10 mt-1 pb-5" style="border: 2px solid black">
       <v-row>
         <v-col cols="4" md="6">
-          <v-btn variant="outlined" class="ml-7 btn-hover" rounded="0" to="/" size="40"
-            ><v-icon>mdi-home</v-icon></v-btn
-          >
+          <v-tooltip text="回首頁" location="bottom">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                variant="outlined"
+                class="ml-7 btn-hover"
+                rounded="0"
+                to="/"
+                size="40"
+                v-bind="props"
+                ><v-icon>mdi-home</v-icon></v-btn
+              >
+            </template>
+          </v-tooltip>
         </v-col>
         <v-col cols="8" md="6" class="d-flex">
           <v-text-field
@@ -48,20 +58,25 @@
                     <h1 class="font-weight-bold mt-n1 mb-1" style="font-size: 2rem">
                       {{ userInfo.name }}
                     </h1>
-                    <v-btn
-                      to="/member/profile"
-                      rounded="0"
-                      size="35"
-                      variant="outlined"
-                      class="btn-hover mt-1"
-                      ><v-icon icon="mdi-pencil"></v-icon
-                    ></v-btn>
+                    <v-tooltip text="編輯球員檔案" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-btn
+                          v-bind="props"
+                          to="/member/profile"
+                          rounded="0"
+                          size="35"
+                          variant="outlined"
+                          class="btn-hover mt-1"
+                          ><v-icon icon="mdi-pencil"></v-icon
+                        ></v-btn>
+                      </template>
+                    </v-tooltip>
                   </div>
                   <h3>{{ userInfo.gender }}．{{ userInfo.skillLevel }}．</h3>
                   <h3>{{ userInfo.email }}</h3>
                   <div class="d-flex justify-space-between mt-5">
                     <div>
-                      <v-card class="card-border mr-n4" width="130" rounded="0">
+                      <v-card class="card-border mr-n4 text-center" width="130" rounded="0">
                         <v-card-title class="font-weight-bold text-h5">{{
                           socialsAttendedNum
                         }}</v-card-title>
@@ -69,7 +84,7 @@
                       </v-card>
                     </div>
                     <div>
-                      <v-card class="card-border mr-n4" width="130" rounded="0">
+                      <v-card class="card-border mr-n4 text-center" width="130" rounded="0">
                         <v-card-title class="font-weight-bold text-h5">{{
                           socialsHostedNum
                         }}</v-card-title>
@@ -77,13 +92,13 @@
                       </v-card>
                     </div>
                     <div>
-                      <v-card class="card-border mr-n4" width="130" rounded="0">
+                      <v-card class="card-border mr-n4 text-center" width="130" rounded="0">
                         <v-card-title class="font-weight-bold text-h5">{{ joinAgo }}</v-card-title>
                         <v-card-text>加入揪排咖 </v-card-text>
                       </v-card>
                     </div>
                     <div>
-                      <v-card class="card-border" width="130" rounded="0">
+                      <v-card class="card-border text-center" width="130" rounded="0">
                         <v-card-title class="font-weight-bold text-h5">{{ joinAgo }}</v-card-title>
                         <v-card-text>加入揪排咖 </v-card-text>
                       </v-card>
@@ -169,7 +184,22 @@
           </v-card>
         </v-col>
         <v-col cols="11" md="8" class="ml-md-n7 ml-7 mr-7 mb-8 mb-md-0">
-          <h1 class="card-title mb-2">收藏的球場 Favorite Courts</h1>
+          <div class="d-flex justify-space-between">
+            <h1 class="card-title mb-2">收藏的球場 Favorite Courts</h1>
+            <v-tooltip text="編輯收藏" location="bottom">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  class="mr-md-2 mr-1 mt-1 btn-hover"
+                  variant="outlined"
+                  rounded="0"
+                  to="/member/favorites"
+                  size="35"
+                  v-bind="props"
+                  ><v-icon>mdi-pencil</v-icon></v-btn
+                >
+              </template>
+            </v-tooltip>
+          </div>
           <swiper
             :slidesPerView="'4'"
             :navigation="true"

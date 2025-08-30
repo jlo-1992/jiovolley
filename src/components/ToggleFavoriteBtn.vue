@@ -1,9 +1,9 @@
 <template>
   <v-btn
-    :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
+    :icon="icon"
     @click="!isLoggedIn ? openDialog() : toggleFavorite(venue)"
     class="btn-heart"
-    variant="plain"
+    variant="default"
   >
   </v-btn>
   <v-dialog v-model="dialog.open" persistent width="360">
@@ -36,6 +36,10 @@ const router = useRouter()
 const route = useRoute()
 
 const props = defineProps({
+  icon: {
+    type: String,
+    required: true,
+  },
   venue: {
     type: Object,
     required: true, // 強制要求父元件傳遞 venue 物件

@@ -1,9 +1,9 @@
 <template>
   <v-container fluid class="bg-dark">
     <v-row no-gutters class="justify-center align-center">
-      <v-col cols="12" md="7" class="bg-light mt-1 mb-2">
+      <v-col cols="12" md="7" class="bg-light">
         <v-row no-gutters>
-          <v-col cols="12" md="6" class="pa-16 form-section">
+          <v-col cols="12" md="6" class="form-section">
             <!-- 登入 ---------------------------------------------------------------->
             <template v-if="isRegistered">
               <v-img
@@ -469,11 +469,18 @@ const rules = {
 </script>
 
 <style lang="scss" scoped>
+.bg-dark {
+  min-height: 91.8vh;
+  overflow: hidden;
+}
+
 .bg-light {
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
   color: vars.$primary-color;
-  min-height: 810px;
+  // min-height: 810px;
+  // max-height: 95vh;
+  // overflow-y: auto;
   box-shadow: 15px 15px 1px black;
 }
 
@@ -494,12 +501,10 @@ const rules = {
   cursor: pointer;
 }
 
+.form-section,
 .image-section {
   transition: transform 0.6s ease-in-out;
-}
-
-.form-section {
-  transition: transform 0.6s ease-in-out;
+  padding: 5% !important;
 }
 
 .card-container.register-mode .image-section {
@@ -516,31 +521,13 @@ const rules = {
 }
 
 .neubrutalism {
-  // box-shadow: 3px 6px 1px vars.$primary-color;
-  // border-radius: 8px;
   margin-bottom: 25px;
-  // background-color: white;
-
-  // :deep(.v-field) {
-  //   border-radius: 8px !important;
-  // }
-
-  // :deep(.v-field__outline::before),
-  // :deep(.v-field__outline::after) {
-  //   border-style: none !important;
-  // }
 }
 
-// .btn {
-//   border-radius: 8px;
-//   font-size: 1.1rem;
-//   box-shadow: 3px 6px 1px black;
-// }
-
-// .btn:hover {
-//   box-shadow: none;
-//   transform: translate(3px, 3px);
-// }
+.v-col {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
 
 .card {
   border: 2px solid black !important;

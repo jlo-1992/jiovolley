@@ -1,89 +1,85 @@
 <template>
-  <div class="pt-8 bg-light">
-    <v-row justify="center">
-      <v-col cols="12" md="10">
-        <v-card class="pa-16 rounded-lg card-memberPage">
-          <div>
-            <div>
-              <h1 class="font-weight-bold text-h4">揪團紀錄</h1>
-            </div>
-            <v-divider :thickness="2" opacity="20" class="mt-5"></v-divider>
-          </div>
+  <v-container class="bg-dark">
+    <v-card class="mt-1 pa-16 card-memberPage">
+      <div>
+        <div>
+          <h1 class="font-weight-bold text-h4">揪團紀錄</h1>
+        </div>
+        <v-divider :thickness="2" opacity="20" class="mt-5"></v-divider>
+      </div>
 
-          <v-divider class="my-4"></v-divider>
-          <v-row class="mt-4 align-center">
-            <v-col cols="12">
-              <v-card class="pa-4 rounded-lg card-memberPage">
-                <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">即將開打的場次</h2>
-                <v-table height="300px" fixed-header striped="even">
-                  <v-alert v-if="upcomingSocials.length === 0" type="info" class="mt-4">
-                    目前沒有您的揪團紀錄
-                  </v-alert>
-                  <thead>
-                    <tr>
-                      <th class="text-left">球場</th>
-                      <th class="text-left">時段</th>
-                      <th class="text-left">價格</th>
-                      <th class="text-left">球員名單</th>
-                      <th class="text-left">出席登入</th>
-                      <th class="text-left">備註</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(social, idx) in upcomingSocials" :key="idx">
-                      <td>{{ social.venue.name }}</td>
-                      <td>
-                        {{ formatTime(social.startDateTime) }} -
-                        {{ formatTime(social.endDateTime) }}
-                      </td>
-                      <td>{{ social.fee }}</td>
-                      <td><v-btn @click="openDialog(social)" class="btn">球員名單</v-btn></td>
-                      <td>
-                        <v-btn class="btn" @click="openQrcodeDialog(social)">QR Code</v-btn>
-                        <!-- <span v-else>QR Code 尚未生成</span> -->
-                      </td>
-                      <td>{{ social.note }}</td>
-                    </tr>
-                  </tbody>
-                </v-table>
-              </v-card>
-              <v-card class="pa-4 rounded-lg mt-8 card-memberPage">
-                <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">已結束的場次</h2>
+      <v-divider class="my-4"></v-divider>
+      <v-row class="mt-4 align-center">
+        <v-col cols="12">
+          <v-card class="pa-4 card-memberPage">
+            <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">即將開打的場次</h2>
+            <v-table height="300px" fixed-header striped="even">
+              <v-alert v-if="upcomingSocials.length === 0" type="info" class="mt-4">
+                目前沒有您的揪團紀錄
+              </v-alert>
+              <thead>
+                <tr>
+                  <th class="text-left">球場</th>
+                  <th class="text-left">時段</th>
+                  <th class="text-left">價格</th>
+                  <th class="text-left">球員名單</th>
+                  <th class="text-left">出席登入</th>
+                  <th class="text-left">備註</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(social, idx) in upcomingSocials" :key="idx">
+                  <td>{{ social.venue.name }}</td>
+                  <td>
+                    {{ formatTime(social.startDateTime) }} -
+                    {{ formatTime(social.endDateTime) }}
+                  </td>
+                  <td>{{ social.fee }}</td>
+                  <td><v-btn @click="openDialog(social)" class="btn">球員名單</v-btn></td>
+                  <td>
+                    <v-btn class="btn" @click="openQrcodeDialog(social)">QR Code</v-btn>
+                    <!-- <span v-else>QR Code 尚未生成</span> -->
+                  </td>
+                  <td>{{ social.note }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-card>
+          <v-card class="pa-4 mt-8 card-memberPage">
+            <h2 class="mb-4 font-weight-bold" style="font-size: 1.3rem">已結束的場次</h2>
 
-                <v-table height="300px" fixed-header striped="even">
-                  <v-alert v-if="pastSocials.length === 0" type="info" class="mt-4">
-                    目前沒有您的揪團紀錄
-                  </v-alert>
-                  <thead>
-                    <tr>
-                      <th class="text-left">球場</th>
-                      <th class="text-left">時段</th>
-                      <th class="text-left">價格</th>
-                      <th class="text-left">球員名單</th>
-                      <th class="text-left">備註</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(social, idx) in pastSocials" :key="idx">
-                      <td>{{ social.venue?.name || '未知場地' }}</td>
-                      <td>
-                        {{ formatTime(social.startDateTime) }} -
-                        {{ formatTime(social.endDateTime) }}
-                      </td>
-                      <td>{{ social.fee }}</td>
-                      <td><v-btn class="btn" @click="openDialog(social)">球員名單</v-btn></td>
+            <v-table height="300px" fixed-header striped="even">
+              <v-alert v-if="pastSocials.length === 0" type="info" class="mt-4">
+                目前沒有您的揪團紀錄
+              </v-alert>
+              <thead>
+                <tr>
+                  <th class="text-left">球場</th>
+                  <th class="text-left">時段</th>
+                  <th class="text-left">價格</th>
+                  <th class="text-left">球員名單</th>
+                  <th class="text-left">備註</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(social, idx) in pastSocials" :key="idx">
+                  <td>{{ social.venue?.name || '未知場地' }}</td>
+                  <td>
+                    {{ formatTime(social.startDateTime) }} -
+                    {{ formatTime(social.endDateTime) }}
+                  </td>
+                  <td>{{ social.fee }}</td>
+                  <td><v-btn class="btn" @click="openDialog(social)">球員名單</v-btn></td>
 
-                      <td>{{ social.note }}</td>
-                    </tr>
-                  </tbody>
-                </v-table>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-  </div>
+                  <td>{{ social.note }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-container>
   <v-dialog v-model="dialog.open" persistent width="800">
     <v-card rounded="lg" class="card-dialog">
       <v-card-title class="text-center mt-3 page-title">球員名單</v-card-title>
@@ -329,6 +325,10 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.bg-dark {
+  min-height: 100vh;
+}
+
 h1 {
   font-family: 'Huninn', sans-serif;
 }
@@ -345,10 +345,6 @@ h3 {
 
 th {
   font-size: 1.2rem;
-}
-
-.bg-light {
-  padding-bottom: 155px;
 }
 
 .btn {

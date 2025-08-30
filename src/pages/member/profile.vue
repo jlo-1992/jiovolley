@@ -1,41 +1,48 @@
 <template>
-  <div class="pt-8 bg-light">
-    <v-row justify="center">
-      <v-col cols="12" md="10">
-        <v-card class="pa-16 rounded-lg card-memberPage">
-          <v-form @submit.prevent="submitUpdate">
-            <div>
-              <div>
-                <h1 class="font-weight-bold text-h4">球員資料</h1>
-                <v-divider :thickness="2" opacity="20" class="mt-5"></v-divider>
-              </div>
-            </div>
+  <v-container class="bg-dark">
+    <v-card class="pa-16 mt-1 card-memberPage">
+      <v-form @submit.prevent="submitUpdate">
+        <div>
+          <div>
+            <h1 class="font-weight-bold text-h4">球員資料</h1>
+            <v-divider :thickness="2" opacity="20" class="mt-5"></v-divider>
+          </div>
+        </div>
 
-            <v-divider class="my-4"></v-divider>
-            <v-row>
-              <v-col cols="12" md="2" class="mt-16 ml-14">
-                <v-avatar size="100">
-                  <v-img src="../../assets/images/passing.png" class="avatar-img" cover></v-img>
-                </v-avatar>
-                <input
-                  type="file"
-                  ref="fileInput"
-                  @change="handleFileChange"
-                  style="display: none"
-                  accept="image/*"
-                />
-                <v-icon-btn
-                  icon="mdi-pencil"
-                  class="mt-15 ml-n7 btn"
-                  @click="triggerFileInput"
-                  rounded="circle"
-                ></v-icon-btn>
-              </v-col>
-              <v-col cols="12" sm="9" md="9">
-                <v-card class="pa-6 rounded-lg card-memberPage">
-                  <h3 class="font-weight-bold mb-4" style="font-size: 1.3rem">一般資訊</h3>
+        <v-divider class="my-4"></v-divider>
+        <v-row justify="center">
+          <!-- <v-col cols="12" md="2" class="mt-16"> </v-col> -->
+          <v-col cols="12" md="12">
+            <v-card class="pb-13 pt-8 pl-16 card-memberPage">
+              <h3 class="font-weight-bold ml-n6" style="font-size: 1.3rem">一般資訊</h3>
+              <v-row>
+                <v-col cols="12" sm="4">
+                  <div class="img-wrapper">
+                    <v-img
+                      src="@/assets/images/userProfile/ryujji.jpg"
+                      class="avatar-img"
+                      cover
+                    ></v-img>
+                    <input
+                      type="file"
+                      ref="fileInput"
+                      @change="handleFileChange"
+                      style="display: none"
+                      accept="image/*"
+                    />
+                    <v-icon-btn
+                      icon="mdi-pencil"
+                      class="btn btn-edit"
+                      @click="triggerFileInput"
+                      rounded="circle"
+                      size="50"
+                    ></v-icon-btn>
+                  </div>
+                </v-col>
+
+                <v-col cols="12" sm="7">
                   <v-row>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="mt-3">
                       <v-text-field
                         label="姓名"
                         v-model="name.value.value"
@@ -46,7 +53,7 @@
                         class="neubrutalism"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="mt-3">
                       <v-select
                         label="性別"
                         v-model="gender.value.value"
@@ -58,6 +65,8 @@
                         class="neubrutalism"
                       ></v-select>
                     </v-col>
+                  </v-row>
+                  <v-row>
                     <v-col cols="12" sm="6">
                       <v-text-field
                         label="Email"
@@ -87,7 +96,9 @@
                         class="neubrutalism"
                       ></v-select>
                     </v-col>
-                    <v-col cols="12">
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="12">
                       <v-text-field
                         label="你的專屬球場勝利語"
                         v-model="quote.value.value"
@@ -100,67 +111,69 @@
                       </v-text-field>
                     </v-col>
                   </v-row>
-                  <v-btn class="mt-4 btn" type="submit">更新球員資料</v-btn>
-                </v-card>
-                <v-card class="pa-6 rounded-lg mt-8 card-memberPage">
-                  <h3 class="font-weight-bold mb-4" style="font-size: 1.3rem">機密資訊</h3>
-                  <v-row>
-                    <v-col cols="12" sm="4">
-                      <v-text-field
-                        label="Password"
-                        type="password"
-                        v-model="password.value.value"
-                        :error-messages="password.errorMessage.value"
-                        variant="outlined"
-                        hide-details
-                        readonly
-                        class="neubrutalism"
-                      ></v-text-field>
-                      <v-btn class="mt-4 btn" variant="outlined" type="submit" block
-                        >更改密碼</v-btn
-                      >
-                    </v-col>
-                    <v-col cols="12" sm="4">
-                      <v-text-field
-                        label="Line ID"
-                        v-model="line_uid.value.value"
-                        :error-messages="line_uid.errorMessage.value"
-                        variant="outlined"
-                        hide-details
-                        readonly
-                        class="neubrutalism"
-                      ></v-text-field>
-                      <v-btn class="mt-4 btn" type="submit" variant="outlined" block
-                        >更改 Line ID</v-btn
-                      >
-                    </v-col>
-                    <v-col cols="12" sm="4">
-                      <v-text-field
-                        label="Google ID"
-                        v-model="google_uid.value.value"
-                        :error-messages="google_uid.errorMessage.value"
-                        variant="outlined"
-                        hide-details
-                        readonly
-                        class="neubrutalism"
-                      ></v-text-field>
-                      <v-btn class="mt-4 btn" type="submit" variant="outlined" block
-                        >更改 Google ID</v-btn
-                      >
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row>
+                  <div class="text-right">
+                    <v-btn class="mt-4 btn mr-3" color="white" type="cancel">取消更新</v-btn>
+                    <v-btn class="mt-4 btn" type="submit">確認更新</v-btn>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+            <v-card class="pa-10 rounded-lg mt-8 card-memberPage">
+              <h3 class="font-weight-bold mb-4" style="font-size: 1.3rem">機密資訊</h3>
+              <v-row>
+                <v-col cols="12" sm="4">
+                  <v-text-field
+                    label="Password"
+                    type="password"
+                    v-model="password.value.value"
+                    :error-messages="password.errorMessage.value"
+                    variant="outlined"
+                    hide-details
+                    readonly
+                    class="neubrutalism"
+                  ></v-text-field>
+                  <v-btn class="mt-6 btn" variant="outlined" type="submit" block>更改密碼</v-btn>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field
+                    label="Line ID"
+                    v-model="line_uid.value.value"
+                    :error-messages="line_uid.errorMessage.value"
+                    variant="outlined"
+                    hide-details
+                    readonly
+                    class="neubrutalism"
+                  ></v-text-field>
+                  <v-btn class="mt-6 btn" type="submit" variant="outlined" block
+                    >更改 Line ID</v-btn
+                  >
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field
+                    label="Google ID"
+                    v-model="google_uid.value.value"
+                    :error-messages="google_uid.errorMessage.value"
+                    variant="outlined"
+                    hide-details
+                    readonly
+                    class="neubrutalism"
+                  ></v-text-field>
+                  <v-btn class="mt-6 btn" type="submit" variant="outlined" block
+                    >更改 Google ID</v-btn
+                  >
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-form>
+    </v-card>
+
     <div
       class="bottom-decoration d-flex justify-end pr-8"
       style="position: fixed; bottom: 0; width: 100%; z-index: -1"
     ></div>
-  </div>
+  </v-container>
   <div class="lottie-overlay" v-if="isSubmitting">
     <DotLottieVue
       style="height: 500px; width: 500px"
@@ -334,6 +347,10 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.bg-dark {
+  min-height: 100vh;
+}
+
 h1 {
   font-family: 'Huninn', sans-serif;
 }
@@ -342,20 +359,29 @@ h3 {
   font-family: 'Cooper Black', sans-serif;
 }
 
-.bg-light {
-  padding-bottom: 155px;
-}
-
-.btn {
-  background-color: #fdd000;
-}
-
 .avatar-img {
-  // border: 1px solid black;
+  border: 2px solid black;
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  box-shadow: 2px 2px 5px #f1f1f1;
+  width: 300px;
+  box-shadow: 2px 4px 1px black;
+}
+
+.img-wrapper {
+  position: relative;
+  border-radius: 50%;
+  width: 300px;
+  text-align: center;
+  margin-left: 50px;
+}
+
+.btn-edit {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.neubrutalism {
+  margin-bottom: 10px;
 }
 
 /* 這裡可以放置您圖片中背景漸層和裝飾物（雲朵、鯨魚）的樣式 */
