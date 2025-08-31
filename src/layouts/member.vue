@@ -65,6 +65,13 @@
           title="我的訂單"
           class="listItems"
         ></v-list-item>
+        <v-list-item
+          link
+          prepend-icon="mdi-home-import-outline"
+          to="/"
+          title="回首頁"
+          class="listItems"
+        ></v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-btn

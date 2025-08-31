@@ -26,7 +26,7 @@
               rounded="xl"
               size="x-large"
               append-icon="mdi-arrow-right"
-              to="/logInSingUp"
+              to="/socials"
               >現在加入</v-btn
             >
           </div>

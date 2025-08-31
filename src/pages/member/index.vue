@@ -200,6 +200,20 @@
               </template>
             </v-tooltip>
           </div>
+
+          <v-card
+            height="225"
+            v-if="!favoriteVenues || favoriteVenues.length === 0"
+            class="card-memberPage"
+          >
+            <v-card-title style="font-size: 1.5rem; line-height: 200px" class="text-center">
+              你還沒有收藏任何球場喔~快到
+              <router-link to="/venueList"
+                ><span style="text-decoration: underline">球場列表</span></router-link
+              >
+              搜尋喜歡的球場吧！
+            </v-card-title>
+          </v-card>
           <swiper
             :slidesPerView="'4'"
             :navigation="true"

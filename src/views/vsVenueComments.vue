@@ -92,16 +92,16 @@
                 >
               </div>
               <div
-                v-if="comment.replies && comment.replies.length > 0"
+                v-if="comment.repliesCount > 0"
                 class="show-replies ml-8 mt-3"
-                @click="toggleShowReplies(idx)"
+                @click="toggleShowReplies(comment)"
               >
                 <v-icon
                   class="mr-3"
-                  :class="{ 'not-rotated': !isActive, rotated: activeStates[idx] }"
+                  :class="{ 'not-rotated': !comment.showReplies, rotated: comment.showReplies }"
                   >mdi-chevron-down</v-icon
                 >
-                <span>{{ comment.replies.length }}則回覆</span>
+                <span>{{ comment.repliesCount }}則回覆</span>
               </div>
 
               <div v-if="activeReplyId === comment._id" class="mt-4">
@@ -130,7 +130,7 @@
                   </div>
                 </v-form>
               </div>
-              <div v-if="comment.showReplies && comment.replies.length > 0">
+              <div v-if="comment.showReplies && comment.repliesCount > 0">
                 <div v-for="reply in comment.replies" :key="reply._id" class="reply-wrapper mt-4">
                   <v-row>
                     <v-col cols="1">
@@ -328,9 +328,8 @@ const comment = useField('comment')
 
 const getComments = async () => {
   try {
-    // 1. 取得所有留言
     const { data } = await venueCommentService.getComments(props.venueId)
-    const fetchedComments = data.venueComments // 2. 針對每個留言，取得回覆並處理使用者資料
+    const fetchedComments = data.venueComments
 
     const commentsWithData = await Promise.all(
       fetchedComments.map(async (comment) => {
@@ -340,41 +339,41 @@ const getComments = async () => {
           : null
         const userName = userData?.name || '未知使用者' // 取得該留言的所有回覆
 
-        let repliesWithData = []
-        try {
-          const { data: repliesData } = await venueCommentReplyService.getReplies(
-            props.venueId,
-            comment._id
-          ) // 針對每個回覆，取得使用者資料
-          repliesWithData = await Promise.all(
-            repliesData.venueCommentReplies.map(async (reply) => {
-              const replyUserData = reply.user
-                ? (await userService.getUserById(reply.user)).data.user
-                : null
-              const replyUserName = replyUserData?.name || '未知使用者'
-              return {
-                ...reply,
-                userName: replyUserName,
-                replyTimeAgo: dayjs(reply.createdAt).fromNow(),
-              }
-            })
-          )
-        } catch (replyError) {
-          console.error('無法取得回覆資料:', replyError)
-        }
+        // let repliesWithData = []
+        // try {
+        //   const { data: repliesData } = await venueCommentReplyService.getReplies(
+        //     props.venueId,
+        //     comment._id
+        //   )
+        //   repliesWithData = await Promise.all(
+        //     repliesData.venueCommentReplies.map(async (reply) => {
+        //       const replyUserData = reply.user
+        //         ? (await userService.getUserById(reply.user)).data.user
+        //         : null
+        //       const replyUserName = replyUserData?.name || '未知使用者'
+        //       return {
+        //         ...reply,
+        //         userName: replyUserName,
+        //         replyTimeAgo: dayjs(reply.createdAt).fromNow(),
+        //       }
+        //     })
+        //   )
+        // } catch (replyError) {
+        //   console.error('無法取得回覆資料:', replyError)
+        // }
 
         return {
           ...comment,
           userName,
           CommentTimeAgo: dayjs(comment.createdAt).fromNow(),
-          replies: repliesWithData, // 將回覆資料加入
+          repliesCount: comment.repliesCount || 0,
+          replies: [],
+          showReplies: false,
         }
       })
     )
 
     comments.value = commentsWithData
-    // 在取得資料後，重新初始化 activeStates
-    activeStates.value = new Array(comments.value.length).fill(false)
   } catch (error) {
     console.error('取得場次留言失敗', error)
     createSnackbar({
@@ -453,57 +452,67 @@ const hideReplyForm = () => {
   activeReplyId.value = null
 }
 
-const toggleShowReplies = (commentId) => {
-  if (activeStates.value[index] !== undefined) {
-    activeStates.value[index] = !activeStates.value[index]
+const getReplies = async (comment) => {
+  try {
+    // 檢查回覆是否已經載入過，避免重複請求
+    if (comment.replies.length > 0) {
+      return
+    }
+
+    const { data: repliesData } = await venueCommentReplyService.getReplies(
+      props.venueId,
+      comment._id
+    )
+
+    const repliesWithData = await Promise.all(
+      repliesData.venueCommentReplies.map(async (reply) => {
+        // ... (回覆的使用者資料處理，與你原來的程式碼類似) ...
+        const replyUserData = reply.user
+          ? (await userService.getUserById(reply.user)).data.user
+          : null
+        const replyUserName = replyUserData?.name || '未知使用者'
+        return {
+          ...reply,
+          userName: replyUserName,
+          replyTimeAgo: dayjs(reply.createdAt).fromNow(),
+        }
+      })
+    )
+    repliesWithData.push({
+      _id: 'fake-id',
+      userName: '測試機器人',
+      reply: '這是一則測試回覆',
+      replyTimeAgo: '剛剛',
+    })
+
+    // 將取得的回覆資料賦值給該留言的 replies 屬性
+    comment.replies.splice(0, comment.replies.length, ...repliesWithData)
+  } catch (replyError) {
+    console.error('無法取得回覆資料:', replyError)
+    createSnackbar({
+      text: '無法載入留言回覆',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    comment.replies.push({
+      _id: 'fake-id-error',
+      userName: '錯誤測試機器人',
+      reply: 'API   呼叫失敗了',
+      replyTimeAgo: '剛剛',
+    })
   }
 }
 
-// const getReplies = async () => {
-//   try {
-//     const { data } = await venueCommentReplyService.getReplies(props.venueId, props.parentCommentId)
-//     const fetchedReplies = data.venueCommentReplies
+const toggleShowReplies = async (comment) => {
+  // 切換 showReplies 狀態
+  comment.showReplies = !comment.showReplies
 
-//     const repliesWithFormattedTime = fetchedReplies.map((reply) => {
-//       // 計算並格式化時間
-//       const replyTimeAgo = dayjs(reply.createdAt).fromNow()
-
-//       return {
-//         ...reply,
-//         replyTimeAgo, // 新增這個屬性到每個留言物件
-//       }
-//     })
-
-//     // 使用 Promise.all 來同時發送所有使用者資料請求，提高效率
-//     const repliesWithUsers = await Promise.all(
-//       repliesWithFormattedTime.map(async (reply) => {
-//         if (reply.user) {
-//           try {
-//             const { data: userData } = await userService.getUserById(reply.user)
-//             if (userData && userData.user) {
-//               // 將使用者名稱添加到每個留言物件中
-//               return { ...reply, userName: userData.user.name }
-//             }
-//           } catch (userError) {
-//             console.error('無法取得使用者資料:', userError)
-//           }
-//         }
-//         // 如果沒有使用者或請求失敗，則回傳原始留言物件，並設定預設名稱
-//         return { ...reply, userName: '未知使用者' }
-//       })
-//     )
-
-//     replies.value = repliesWithUsers
-//   } catch (error) {
-//     console.error('取得留言回覆失敗', error)
-//     createSnackbar({
-//       text: '無法載入留言回覆',
-//       snackbarProps: {
-//         color: 'red',
-//       },
-//     })
-//   }
-// }
+  // 如果狀態變為 true 且回覆尚未載入，則執行載入
+  if (comment.showReplies && comment.replies.length === 0) {
+    await getReplies(comment)
+  }
+}
 
 // vee-validate 的表單送出
 // handleSubmit(處理function)
@@ -537,11 +546,17 @@ const submitReplies = handleReplySubmit(async (values) => {
         color: 'green',
       },
     })
+    await getComments()
     resetReplyForm()
-    hideReplyForm() // 回覆成功後隱藏表單
-    parentComment.replies = []
-    await toggleShowReplies(parentComment)
-    parentComment.showReplies = true
+    hideReplyForm()
+    const updatedParentComment = comments.value.find(
+      (comment) => comment._id === activeReplyId.value
+    )
+    if (updatedParentComment) {
+      updatedParentComment.showReplies = true
+      // 呼叫 getReplies 函式，載入剛剛新增的回覆資料
+      await getReplies(updatedParentComment)
+    }
   } catch (error) {
     console.error(error)
     createSnackbar({
@@ -693,9 +708,6 @@ const submitReport = handleReportSubmit(async (values) => {
     })
   }
 })
-
-const isActive = ref(false)
-const activeStates = ref(new Array(comments.value.length).fill(false))
 
 const iconIndex = ref(0)
 const icon = computed(() => {
