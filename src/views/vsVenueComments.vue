@@ -70,35 +70,117 @@
             </v-col>
             <v-col cols="10">
               <div class="d-flex align-center">
-                <div class="mr-3 font-weight-bold text-h6">{{ comment.userName }}</div>
+                <div class="mr-3 font-weight-bold mb-1" style="font-size: 1.2rem">
+                  {{ comment.userName }}
+                </div>
                 <div style="color: gray">{{ comment.CommentTimeAgo }}</div>
               </div>
-              <div>{{ comment.comment }}</div>
-              <v-icon
-                class="icon-like mt-2 mr-1"
-                @click="toggleLike(comment)"
-                :color="comment.likedBy?.includes(user._id) ? 'blue' : 'grey'"
-                >mdi-thumb-up-outline</v-icon
+              <div style="font-size: 1.2rem">{{ comment.comment }}</div>
+              <div class="d-flex mt-4 mb-4">
+                <v-icon
+                  class="icon-like mr-1"
+                  @click="toggleLike(comment)"
+                  :color="comment.likedBy?.includes(user._id) ? 'blue' : 'grey'"
+                  >mdi-thumb-up-outline</v-icon
+                >
+                <span class="likes-number mt-2">{{ comment.likes }}</span>
+                <v-icon class="icon-report ml-5 mr-6" @click="openDialog(comment)"
+                  >mdi-flag-outline</v-icon
+                >
+                <v-btn class="btn btn-reply" rounded="lg" @click="showReplyForm(comment._id)"
+                  >回覆</v-btn
+                >
+              </div>
+              <div
+                v-if="comment.replies && comment.replies.length > 0"
+                class="show-replies ml-8 mt-3"
+                @click="toggleShowReplies(idx)"
               >
-              <span class="likes-number">{{ comment.likes }}</span>
-              <v-icon class="icon-report mt-2 ml-5 mr-6" @click="openDialog(comment)"
-                >mdi-flag-outline</v-icon
-              >
-              <v-btn class="mt-2 btn btn-reply" rounded="lg">回覆</v-btn>
-              <div class="show-replies ml-8 mt-3" @click="activeStates[idx] = !activeStates[idx]">
                 <v-icon
                   class="mr-3"
                   :class="{ 'not-rotated': !isActive, rotated: activeStates[idx] }"
                   >mdi-chevron-down</v-icon
                 >
-                <span>1 則回覆</span>
+                <span>{{ comment.replies.length }}則回覆</span>
+              </div>
+
+              <div v-if="activeReplyId === comment._id" class="mt-4">
+                <v-form :disabled="isReplySubmitting" @submit.prevent="submitReplies">
+                  <v-text-field
+                    v-model="reply.value.value"
+                    :error-messages="reply.errorMessage.value"
+                    :prepend-icon="icon"
+                    type="text"
+                    variant="filled"
+                    clearable
+                    label="請輸入回覆"
+                    @click:prepend="changeIcon"
+                  ></v-text-field>
+                  <div class="d-flex justify-end">
+                    <v-btn
+                      rounded="lg"
+                      class="btn btn-reply mr-2"
+                      type="submit"
+                      :disabled="isReplySubmitting"
+                      >回覆</v-btn
+                    >
+                    <v-btn rounded="lg" color="white" class="btn btn-reply" @click="hideReplyForm"
+                      >取消</v-btn
+                    >
+                  </div>
+                </v-form>
+              </div>
+              <div v-if="comment.showReplies && comment.replies.length > 0">
+                <div v-for="reply in comment.replies" :key="reply._id" class="reply-wrapper mt-4">
+                  <v-row>
+                    <v-col cols="1">
+                      <v-icon>mdi-emoticon</v-icon>
+                    </v-col>
+                    <v-col cols="10">
+                      <div class="d-flex align-center">
+                        <div class="mr-3 font-weight-bold text-h6">{{ reply.userName }}</div>
+                        <div style="color: gray">{{ reply.replyTimeAgo }}</div>
+                      </div>
+                      <div>{{ reply.reply }}</div>
+                      <v-icon
+                        class="icon-like mt-2 mr-1"
+                        @click="toggleLikeReply(reply, comment)"
+                        :color="reply.likedBy?.includes(user._id) ? 'blue' : 'grey'"
+                        >mdi-thumb-up-outline</v-icon
+                      >
+                      <span class="likes-number">{{ reply.likes }}</span>
+                      <v-icon class="icon-report mt-2 ml-5 mr-6" @click="openDialog(reply)"
+                        >mdi-flag-outline</v-icon
+                      >
+                    </v-col>
+                  </v-row>
+                </div>
               </div>
             </v-col>
           </v-row>
         </div>
-        <!-- <v-btn v-if="comments.length >= 5" class="more-comments-btn btn" height="45"
-          >顯示更多留言</v-btn
-        > -->
+      </v-col>
+      <v-col cols="12" md="3" class="mt-md-12 ml-md-16">
+        <h1 class="font-weight-bold mb-5" style="font-size: 1.8rem">其他你可能有興趣的場館</h1>
+
+        <v-card
+          v-for="(venue, idx) in venuesWithout"
+          :key="idx"
+          class="d-flex mb-5"
+          rounded="lg"
+          :to="`/venueSingle/${venue._id}`"
+          width="500"
+        >
+          <div>
+            <v-img width="250" height="150" rounded="lg" :src="venue.images[0]" cover></v-img>
+          </div>
+          <div>
+            <v-card-title class="font-weight-bold" style="white-space: wrap">{{
+              venue.name
+            }}</v-card-title>
+            <v-card-text>{{ venue.city }}{{ venue.address }}</v-card-text>
+          </div>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -131,12 +213,14 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import venueCommentService from '@/services/venueCommentService'
-import { useUserStore } from '@/stores/userStore'
+import venueCommentReplyService from '@/services/venueCommentReplyService'
+import venueService from '@/services/venueService'
 import userService from '@/services/userService'
+import { useUserStore } from '@/stores/userStore'
 import { useRoute, useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
 import dayjs from 'dayjs'
@@ -152,12 +236,17 @@ const route = useRoute()
 const user = useUserStore()
 const isLoggedIn = computed(() => user.isLoggedIn)
 const comments = ref([])
+const replies = ref([])
+const showReplies = ref(false)
+const allVenues = ref([])
+const venuesWithout = ref([])
 const dialog = ref({
   // 控制對話框開關
   open: false,
   // 當前操作的留言 ID
   id: '',
 })
+const activeReplyId = ref(null)
 
 const orderSelection = ref({
   title: '最新留言',
@@ -196,6 +285,25 @@ const props = defineProps({
   },
 })
 
+const getVenues = async (id) => {
+  try {
+    const { data } = await venueService.getAvailable()
+    allVenues.value = data.venues
+    venuesWithout.value = allVenues.value
+      .filter((venue) => venue._id !== id)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 8)
+  } catch (error) {
+    console.error(error)
+    createSnackbar({
+      text: error?.response?.data?.message || '球場取得失敗，請稍後再試！',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+}
+
 // 建立 vee-validate 註冊表單
 const {
   handleSubmit: handleCommentSubmit,
@@ -220,39 +328,53 @@ const comment = useField('comment')
 
 const getComments = async () => {
   try {
+    // 1. 取得所有留言
     const { data } = await venueCommentService.getComments(props.venueId)
-    const fetchedComments = data.venueComments
+    const fetchedComments = data.venueComments // 2. 針對每個留言，取得回覆並處理使用者資料
 
-    const commentsWithFormattedTime = fetchedComments.map((comment) => {
-      // 計算並格式化時間
-      const CommentTimeAgo = dayjs(comment.createdAt).fromNow()
+    const commentsWithData = await Promise.all(
+      fetchedComments.map(async (comment) => {
+        // 取得留言的使用者資料
+        const userData = comment.user
+          ? (await userService.getUserById(comment.user)).data.user
+          : null
+        const userName = userData?.name || '未知使用者' // 取得該留言的所有回覆
 
-      return {
-        ...comment,
-        CommentTimeAgo, // 新增這個屬性到每個留言物件
-      }
-    })
-
-    // 使用 Promise.all 來同時發送所有使用者資料請求，提高效率
-    const commentsWithUsers = await Promise.all(
-      commentsWithFormattedTime.map(async (comment) => {
-        if (comment.user) {
-          try {
-            const { data: userData } = await userService.getUserById(comment.user)
-            if (userData && userData.user) {
-              // 將使用者名稱添加到每個留言物件中
-              return { ...comment, userName: userData.user.name }
-            }
-          } catch (userError) {
-            console.error('無法取得使用者資料:', userError)
-          }
+        let repliesWithData = []
+        try {
+          const { data: repliesData } = await venueCommentReplyService.getReplies(
+            props.venueId,
+            comment._id
+          ) // 針對每個回覆，取得使用者資料
+          repliesWithData = await Promise.all(
+            repliesData.venueCommentReplies.map(async (reply) => {
+              const replyUserData = reply.user
+                ? (await userService.getUserById(reply.user)).data.user
+                : null
+              const replyUserName = replyUserData?.name || '未知使用者'
+              return {
+                ...reply,
+                userName: replyUserName,
+                replyTimeAgo: dayjs(reply.createdAt).fromNow(),
+              }
+            })
+          )
+        } catch (replyError) {
+          console.error('無法取得回覆資料:', replyError)
         }
-        // 如果沒有使用者或請求失敗，則回傳原始留言物件，並設定預設名稱
-        return { ...comment, userName: '未知使用者' }
-      }),
+
+        return {
+          ...comment,
+          userName,
+          CommentTimeAgo: dayjs(comment.createdAt).fromNow(),
+          replies: repliesWithData, // 將回覆資料加入
+        }
+      })
     )
 
-    comments.value = commentsWithUsers
+    comments.value = commentsWithData
+    // 在取得資料後，重新初始化 activeStates
+    activeStates.value = new Array(comments.value.length).fill(false)
   } catch (error) {
     console.error('取得場次留言失敗', error)
     createSnackbar({
@@ -263,10 +385,6 @@ const getComments = async () => {
     })
   }
 }
-
-onMounted(() => {
-  getComments()
-})
 
 // vee-validate 的表單送出
 // handleSubmit(處理function)
@@ -304,6 +422,177 @@ const submitComment = handleCommentSubmit(async (values) => {
     })
   }
 })
+
+const {
+  handleSubmit: handleReplySubmit,
+  isSubmitting: isReplySubmitting,
+  resetForm: resetReplyForm,
+} = useForm({
+  // 用 yup 定義表單驗證格式
+  // https://github.com/jquense/yup
+  // 前後端都要做驗證，且驗證的規則要一樣，前端是要回覆給使用者錯誤的原因，後端是要防止錯誤的資料進資料庫
+  validationSchema: yup.object({
+    reply: yup.string().required('回覆內容必填').min(1, '留言不可為空白'),
+  }),
+  initialValues: {
+    reply: '',
+  },
+})
+
+// 建立 vee-validate 的表單欄位
+// 一定要在 useForm 後面
+// useField(欄位名稱)
+const reply = useField('reply')
+
+const showReplyForm = (commentId) => {
+  activeReplyId.value = commentId
+}
+
+const hideReplyForm = () => {
+  resetReplyForm()
+  activeReplyId.value = null
+}
+
+const toggleShowReplies = (commentId) => {
+  if (activeStates.value[index] !== undefined) {
+    activeStates.value[index] = !activeStates.value[index]
+  }
+}
+
+// const getReplies = async () => {
+//   try {
+//     const { data } = await venueCommentReplyService.getReplies(props.venueId, props.parentCommentId)
+//     const fetchedReplies = data.venueCommentReplies
+
+//     const repliesWithFormattedTime = fetchedReplies.map((reply) => {
+//       // 計算並格式化時間
+//       const replyTimeAgo = dayjs(reply.createdAt).fromNow()
+
+//       return {
+//         ...reply,
+//         replyTimeAgo, // 新增這個屬性到每個留言物件
+//       }
+//     })
+
+//     // 使用 Promise.all 來同時發送所有使用者資料請求，提高效率
+//     const repliesWithUsers = await Promise.all(
+//       repliesWithFormattedTime.map(async (reply) => {
+//         if (reply.user) {
+//           try {
+//             const { data: userData } = await userService.getUserById(reply.user)
+//             if (userData && userData.user) {
+//               // 將使用者名稱添加到每個留言物件中
+//               return { ...reply, userName: userData.user.name }
+//             }
+//           } catch (userError) {
+//             console.error('無法取得使用者資料:', userError)
+//           }
+//         }
+//         // 如果沒有使用者或請求失敗，則回傳原始留言物件，並設定預設名稱
+//         return { ...reply, userName: '未知使用者' }
+//       })
+//     )
+
+//     replies.value = repliesWithUsers
+//   } catch (error) {
+//     console.error('取得留言回覆失敗', error)
+//     createSnackbar({
+//       text: '無法載入留言回覆',
+//       snackbarProps: {
+//         color: 'red',
+//       },
+//     })
+//   }
+// }
+
+// vee-validate 的表單送出
+// handleSubmit(處理function)
+// values 表單所有欄位的值
+const submitReplies = handleReplySubmit(async (values) => {
+  if (!isLoggedIn.value) {
+    createSnackbar({
+      text: '請先登入才能留言喔！',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    return router.push('/logInSingUp')
+  }
+
+  // 檢查 activeReplyId 是否存在
+  if (!activeReplyId.value) {
+    throw new Error('無法取得回覆的留言 ID')
+  }
+
+  const parentComment = comments.value.find((comment) => comment._id === activeReplyId.value)
+  if (!parentComment) return
+
+  try {
+    await venueCommentReplyService.create(props.venueId, parentComment._id, {
+      reply: values.reply,
+    })
+    createSnackbar({
+      text: '新增回覆成功',
+      snackbarProps: {
+        color: 'green',
+      },
+    })
+    resetReplyForm()
+    hideReplyForm() // 回覆成功後隱藏表單
+    parentComment.replies = []
+    await toggleShowReplies(parentComment)
+    parentComment.showReplies = true
+  } catch (error) {
+    console.error(error)
+    createSnackbar({
+      text: error?.response?.data?.message || '回覆失敗，請稍後再試！',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+})
+
+const toggleLikeReply = async (reply) => {
+  if (!isLoggedIn.value) {
+    createSnackbar({
+      text: '請先登入才能按讚喔！',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    return router.push('/logInSingUp')
+  }
+
+  try {
+    const { data } = await venueCommentReplyService.likeReply(reply._id)
+
+    const originalReply = parentComment.replies.find((reply) => reply._id === reply._id)
+    if (!originalReply) return
+
+    if (data.message === '已按讚回覆！') {
+      originalReply.likes++
+      if (!originalReply.likedBy) originalReply.likedBy = []
+      originalReply.likedBy.push(user._id)
+    } else if (data.message === '您已收回讚！') {
+      originalReply.likes--
+      if (originalReply.likedBy) {
+        const userIndex = originalReply.likedBy.indexOf(user._id)
+        if (userIndex > -1) {
+          originalReply.likedBy.splice(userIndex, 1)
+        }
+      }
+    }
+  } catch (error) {
+    console.error(error)
+    createSnackbar({
+      text: error?.response?.data?.message || '按讚/取消按讚失敗，請稍後再試！',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+}
 
 const toggleLike = async (comment) => {
   if (!isLoggedIn.value) {
@@ -345,8 +634,6 @@ const toggleLike = async (comment) => {
     })
   }
 }
-
-// 還沒寫report dialog的useForm跟useField
 
 const openDialog = (comment) => {
   if (!isLoggedIn.value) {
@@ -417,6 +704,11 @@ const icon = computed(() => {
 function changeIcon() {
   iconIndex.value === icons.length - 1 ? (iconIndex.value = 0) : iconIndex.value++
 }
+
+onMounted(() => {
+  getComments()
+  getVenues()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -430,8 +722,10 @@ function changeIcon() {
 
 .comment-wrapper {
   background: white;
-  padding: 10px 10px;
+  padding: 15px 10px;
   border-radius: 16px;
+  border: 2px solid black;
+  box-shadow: 3px 6px 1px black;
 }
 
 .show-replies {

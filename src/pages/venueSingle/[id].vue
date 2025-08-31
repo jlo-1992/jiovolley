@@ -38,10 +38,10 @@
                 <v-icon-btn
                   icon="mdi-pencil"
                   size="38"
-                  variant="default"
                   color="#fdd000"
                   @click="openDialog(venue)"
                   class="edit-btn"
+                  variant="text"
                 >
                 </v-icon-btn>
               </div>
@@ -136,10 +136,10 @@
               <v-icon-btn
                 icon="mdi-pencil"
                 size="38"
-                variant="default"
                 color="#fdd000"
                 @click="openDialog(venue)"
                 class="edit-btn"
+                variant="text"
               >
               </v-icon-btn>
             </div>
@@ -354,12 +354,12 @@
       </v-card>
     </v-form>
   </v-dialog>
-  <venueComments :venue-id="route.params.id" />
+  <venueComments :key="route.params.id" :venue-id="route.params.id" />
   <footerSection />
 </template>
 
 <script setup>
-import { ref, onMounted, computed, useTemplateRef } from 'vue'
+import { ref, onMounted, computed, useTemplateRef, watch } from 'vue'
 import { useDisplay } from 'vuetify'
 import venueService from '@/services/venueService'
 import { useRoute, useRouter } from 'vue-router'
@@ -638,6 +638,18 @@ const backgroundStyle = computed(() => {
     transform: 'scale(1.5)',
   }
 })
+
+watch(
+  () => route.params.id,
+  (newId) => {
+    // 確保新 ID 存在
+    if (newId) {
+      // 當 props.venueId 改變時，重新呼叫 getVenues 並傳入新的 id
+      getVenueInfo(newId)
+    }
+  },
+  { immediate: true } // immediate: true 讓它在組件初次載入時也立即執行一次
+)
 
 const cities = [
   '臺北市',

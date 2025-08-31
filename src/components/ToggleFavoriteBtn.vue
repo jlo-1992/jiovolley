@@ -3,7 +3,9 @@
     :icon="icon"
     @click="!isLoggedIn ? openDialog() : toggleFavorite(venue)"
     class="btn-heart"
-    variant="default"
+    variant="text"
+    :size="size"
+    :class="class"
   >
   </v-btn>
   <v-dialog v-model="dialog.open" persistent width="360">
@@ -43,6 +45,14 @@ const props = defineProps({
   venue: {
     type: Object,
     required: true, // 強制要求父元件傳遞 venue 物件
+  },
+  size: {
+    type: [String, Number],
+    default: undefined,
+  },
+  class: {
+    type: String,
+    default: undefined,
   },
 })
 
