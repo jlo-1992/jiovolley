@@ -926,7 +926,7 @@ h2 {
   .pics-wrapper {
     position: absolute;
     top: 1%;
-    right: -43%;
+    right: -10%;
   }
 
   .pic {

@@ -45,7 +45,7 @@
               <v-col cols="4">
                 <v-img
                   style="border: 2px solid black"
-                  src="@/assets/images/userProfile/ryujji.jpg"
+                  :src="userInfo.avatar"
                   height="320"
                   width="250"
                   class="mt-1"

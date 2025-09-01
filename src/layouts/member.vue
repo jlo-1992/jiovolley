@@ -10,7 +10,18 @@
       <v-list nav>
         <v-list-item>
           <router-link to="/">
-            <v-img src="@/assets/images/logo-light.png" class="mt-10 mx-auto" width="180"></v-img>
+            <v-img
+              v-if="!display.smAndDown.value"
+              src="@/assets/images/logo-light.png"
+              class="mt-10 mx-auto"
+              width="180"
+            ></v-img>
+            <v-img
+              v-else
+              class="mt-10"
+              width="30"
+              src="@/assets/images/logo-only-light.png"
+            ></v-img>
           </router-link>
         </v-list-item>
       </v-list>
@@ -132,10 +143,6 @@ onMounted(() => {
   box-shadow: 2px 2px 1px 1px vars.$primary-color;
 }
 
-.listItems {
-  margin-left: 20px;
-}
-
 .listItems:first-child {
   margin-top: 50px;
 }
@@ -149,5 +156,11 @@ onMounted(() => {
   background-color: #353d42;
   border: none;
   color: white;
+}
+
+@media (min-width: 768) {
+  .listItems {
+    margin-left: 20px;
+  }
 }
 </style>

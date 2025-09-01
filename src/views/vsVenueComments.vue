@@ -3,13 +3,13 @@
     <v-row>
       <v-col cols="12" md="7" class="mt-12">
         <div class="upper-wrapper d-flex mb-5">
-          <h2 class="mr-8 mt-1">
+          <h2 class="mr-8 mt-2">
             <span>{{ comments.length }}</span> 則留言
           </h2>
           <div class="text-center">
             <v-menu>
               <template v-slot:activator="{ props: activatorProps, isActive }">
-                <v-btn rounded="xl" v-bind="activatorProps">
+                <v-btn rounded="xl" v-bind="activatorProps" class="btn" color="white">
                   <template v-slot:append>
                     <v-icon-btn
                       :rotate="isActive ? 180 : 0"
@@ -166,8 +166,7 @@
         <v-card
           v-for="(venue, idx) in venuesWithout"
           :key="idx"
-          class="d-flex mb-5"
-          rounded="lg"
+          class="d-flex mb-5 card-recommandVenues"
           :to="`/venueSingle/${venue._id}`"
           width="500"
         >
@@ -339,29 +338,6 @@ const getComments = async () => {
           : null
         const userName = userData?.name || '未知使用者' // 取得該留言的所有回覆
 
-        // let repliesWithData = []
-        // try {
-        //   const { data: repliesData } = await venueCommentReplyService.getReplies(
-        //     props.venueId,
-        //     comment._id
-        //   )
-        //   repliesWithData = await Promise.all(
-        //     repliesData.venueCommentReplies.map(async (reply) => {
-        //       const replyUserData = reply.user
-        //         ? (await userService.getUserById(reply.user)).data.user
-        //         : null
-        //       const replyUserName = replyUserData?.name || '未知使用者'
-        //       return {
-        //         ...reply,
-        //         userName: replyUserName,
-        //         replyTimeAgo: dayjs(reply.createdAt).fromNow(),
-        //       }
-        //     })
-        //   )
-        // } catch (replyError) {
-        //   console.error('無法取得回覆資料:', replyError)
-        // }
-
         return {
           ...comment,
           userName,
@@ -478,12 +454,6 @@ const getReplies = async (comment) => {
         }
       })
     )
-    repliesWithData.push({
-      _id: 'fake-id',
-      userName: '測試機器人',
-      reply: '這是一則測試回覆',
-      replyTimeAgo: '剛剛',
-    })
 
     // 將取得的回覆資料賦值給該留言的 replies 屬性
     comment.replies.splice(0, comment.replies.length, ...repliesWithData)
@@ -494,12 +464,6 @@ const getReplies = async (comment) => {
       snackbarProps: {
         color: 'red',
       },
-    })
-    comment.replies.push({
-      _id: 'fake-id-error',
-      userName: '錯誤測試機器人',
-      reply: 'API   呼叫失敗了',
-      replyTimeAgo: '剛剛',
     })
   }
 }
@@ -582,6 +546,8 @@ const toggleLikeReply = async (reply) => {
   try {
     const { data } = await venueCommentReplyService.likeReply(reply._id)
 
+    const parentComment = comments.value.find((comment) => comment._id === activeReplyId.value)
+    if (!parentComment) return
     const originalReply = parentComment.replies.find((reply) => reply._id === reply._id)
     if (!originalReply) return
 
@@ -784,6 +750,10 @@ onMounted(() => {
 
 .btn-reply {
   font-size: 0.9rem;
+}
+
+.card-recommandVenues:hover {
+  box-shadow: 3px 6px 1px black;
 }
 
 @media (min-width: 768px) {

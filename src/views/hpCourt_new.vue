@@ -1,9 +1,13 @@
 <template>
-  <v-container fluid class="bg-light">
+  <v-container fluid class="bg-light" style="background-color: white">
     <v-row>
-      <v-col cols="12" md="12" class="mb-md-5 ml-md-3 d-flex justify-space-between">
-        <h1 class="page-title">探索各地特色球場</h1>
-        <v-btn class="btn-outlined mt-md-10 mt-9" variant="outlined" to="/venueList"
+      <v-col cols="12" md="12" class="ml-md-3 d-flex justify-space-between">
+        <h1 class="page-title" style="color: black">探索各地特色球場</h1>
+        <v-btn
+          class="btn-outlined mt-md-10 mt-9"
+          style="border-color: black; color: black; box-shadow: 2px 3px 1px black"
+          variant="outlined"
+          to="/venueList"
           >球場列表</v-btn
         >
       </v-col>
@@ -11,15 +15,8 @@
     <v-row justify="center" class="pr-10 pl-10">
       <v-col cols="12" class="d-flex flex-wrap justify-evenly ga-10">
         <template v-for="(venue, idx) in randomVenues" :key="idx">
-          <v-card class="card" height="535" rounded="lg" width="425">
-            <v-img
-              class="imgs"
-              :src="venue.images[0]"
-              rounded="lg"
-              cover
-              height="100%"
-              position="top"
-            ></v-img>
+          <v-card class="card" height="535" width="425">
+            <v-img class="imgs" :src="venue.images[0]" cover height="100%" position="top"></v-img>
             <div class="overlay-text">
               <h1 class="text-h5 card-title">{{ venue.name }}</h1>
               <h2 class="venue-address">{{ venue.city }}{{ venue.address }}</h2>
@@ -128,13 +125,12 @@ h1 {
 .card {
   transition: all 0.3s ease-in-out;
   position: relative;
-  border: 3px solid black;
+  border: 2px solid black;
+  border-radius: 8px;
 }
 
 .card:hover {
-  box-shadow: 15px 15px 1px #fdd000;
-  // box-shadow: none;
-  // transform: translate(15px, 15px);
+  box-shadow: 15px 15px 1px black;
 
   .overlay-text {
     height: 205px;

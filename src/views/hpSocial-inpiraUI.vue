@@ -1,5 +1,6 @@
 <template>
   <div class="bg-black">
+    <div class="overlay-background"></div>
     <v-container fluid>
       <v-row justify="center">
         <v-col cols="12" md="12" class="mb-md-5 ml-md-11 d-flex justify-space-between">
@@ -112,7 +113,9 @@ onMounted(() => {
 }
 
 .bg-black {
-  background: black;
+  // background: black;
+  position: relative;
+  background: url('@/assets/images/banner/volleyballCourt.jpeg') center/cover;
 }
 
 .page-title {
@@ -121,6 +124,7 @@ onMounted(() => {
   letter-spacing: 2px;
   font-weight: 900;
   margin-left: 25px;
+  z-index: 100;
 }
 
 .animate-marquee {
@@ -227,11 +231,9 @@ onMounted(() => {
   background-color: #ffd000;
   height: 50px;
   width: 200px;
-  opacity: 0; // 預設隱藏
-  transform: translateY(20px); // 按鈕從下方滑入
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .card:hover .card-img {
@@ -242,10 +244,6 @@ onMounted(() => {
   opacity: 1;
   transform: translateY(0);
 }
-
-// :deep(.v-divider) {
-//   border-color: #ffd000 !important; // 強制覆蓋 Vuetify 的預設顏色
-// }
 
 .btn-outlined {
   border: 2px solid white;
@@ -264,6 +262,15 @@ onMounted(() => {
   border: 2px solid #ffd000;
   transform: translate(5px, 5px);
   box-shadow: none;
+}
+
+.overlay-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.664) 90%, transparent);
 }
 
 @media (min-width: 768px) {

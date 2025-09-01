@@ -1,8 +1,10 @@
 <template>
   <videoSection class="section" />
+  <introSection class="section" />
   <newCourtSection class="section" />
   <socialInpiraUI class="section" />
   <productSection />
+  <joinNowSection />
   <footerSection />
 </template>
 
@@ -12,6 +14,8 @@ import socialInpiraUI from '@/views/hpSocial-inpiraUI.vue'
 import newCourtSection from '@/views/hpCourt_new.vue'
 import productSection from '@/views/hpProducts.vue'
 import footerSection from '@/views/hpFooter.vue'
+import introSection from '@/views/hpIntro.vue'
+import joinNowSection from '@/views/hpJoinNow.vue'
 </script>
 
 <style scoped lang="scss">

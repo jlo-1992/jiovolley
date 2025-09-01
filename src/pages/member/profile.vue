@@ -11,18 +11,13 @@
 
         <v-divider class="my-4"></v-divider>
         <v-row justify="center">
-          <!-- <v-col cols="12" md="2" class="mt-16"> </v-col> -->
           <v-col cols="12" md="12">
             <v-card class="pb-13 pt-8 pl-16 card-memberPage">
               <h3 class="font-weight-bold ml-n6" style="font-size: 1.3rem">一般資訊</h3>
               <v-row>
                 <v-col cols="12" sm="4">
                   <div class="img-wrapper">
-                    <v-img
-                      src="@/assets/images/userProfile/ryujji.jpg"
-                      class="avatar-img"
-                      cover
-                    ></v-img>
+                    <v-img :src="avatarSrc" class="avatar-img" cover></v-img>
                     <input
                       type="file"
                       ref="fileInput"
@@ -238,6 +233,13 @@ const triggerFileInput = () => {
   fileInput.value.click()
 }
 
+// 根據是否有預覽圖，決定要顯示哪張圖片
+const avatarSrc = computed(() => {
+  return (
+    previewAvatarSrc.value || databaseAvatarSrc.value || '@/assets/images/userProfile/ryujji.jpg'
+  )
+})
+
 const getUserProfile = async () => {
   try {
     const { data } = await userService.profile()
@@ -269,9 +271,25 @@ const getUserProfile = async () => {
   }
 }
 
+// 提交表單，包含所有資料和圖片
 const submitUpdate = handleSubmit(async (values) => {
   try {
-    await userService.updateProfile(values)
+    const formData = new FormData()
+
+    // 將所有文字欄位資料加入 FormData
+    for (const key in values) {
+      // 避免傳送空值或不需要的欄位
+      if (key !== 'password' && key !== 'line_uid' && key !== 'google_uid') {
+        formData.append(key, values[key])
+      }
+    }
+
+    // 如果使用者有選擇新圖片，就將其加入 FormData
+    if (selectedFile.value) {
+      formData.append('avatar', selectedFile.value)
+    }
+
+    const { data } = await userService.updateProfile(formData)
 
     createSnackbar({
       text: '球員資料編輯成功！',
@@ -280,6 +298,7 @@ const submitUpdate = handleSubmit(async (values) => {
       },
     })
 
+    // 更新成功後，重新取得會員資料來更新頁面顯示
     await getUserProfile()
   } catch (error) {
     console.error(error)
@@ -292,50 +311,47 @@ const submitUpdate = handleSubmit(async (values) => {
   }
 })
 
-// 處理檔案變更並立即上傳
-const handleFileChange = async (event) => {
+// 處理檔案變更，只做本地預覽並儲存檔案
+const handleFileChange = (event) => {
   const file = event.target.files[0]
   if (file) {
-    // 先做本地預覽
+    selectedFile.value = file
     const reader = new FileReader()
     reader.onload = (e) => {
       previewAvatarSrc.value = e.target.result
     }
     reader.readAsDataURL(file)
-
-    // 執行圖片上傳
-    await uploadAvatar(file)
   }
 }
 
 // 獨立的圖片上傳函式
-const uploadAvatar = async (file) => {
-  try {
-    const formData = new FormData()
-    formData.append('avatar', file)
-    const { data } = await userService.updateProfile(formData) // 假設後端 API 接收圖片並回傳新的使用者資料
+// const uploadAvatar = async (file) => {
+//   try {
+//     const formData = new FormData()
+//     formData.append('avatar', file)
+//     const { data } = await userService.updateProfile(formData) // 假設後端 API 接收圖片並回傳新的使用者資料
 
-    if (data.user && data.user.avatar) {
-      databaseAvatarSrc.value = data.user.avatar
-      previewAvatarSrc.value = null
-      selectedFile.value = null
-    }
-    createSnackbar({
-      text: '照片更新成功！',
-      snackbarProps: {
-        color: 'green',
-      },
-    })
-  } catch (error) {
-    console.error('照片上傳失敗:', error)
-    createSnackbar({
-      text: error?.response?.data?.message || '照片更新失敗，請稍後再試！',
-      snackbarProps: {
-        color: 'red',
-      },
-    })
-  }
-}
+//     if (data.user && data.user.avatar) {
+//       databaseAvatarSrc.value = data.user.avatar
+//       previewAvatarSrc.value = null
+//       selectedFile.value = null
+//     }
+//     createSnackbar({
+//       text: '照片更新成功！',
+//       snackbarProps: {
+//         color: 'green',
+//       },
+//     })
+//   } catch (error) {
+//     console.error('照片上傳失敗:', error)
+//     createSnackbar({
+//       text: error?.response?.data?.message || '照片更新失敗，請稍後再試！',
+//       snackbarProps: {
+//         color: 'red',
+//       },
+//     })
+//   }
+// }
 
 const rules = {
   required: (value) => !!value || '此欄位為必填.',
@@ -363,6 +379,7 @@ h3 {
   border: 2px solid black;
   border-radius: 50%;
   width: 300px;
+  height: 300px;
   box-shadow: 2px 4px 1px black;
 }
 

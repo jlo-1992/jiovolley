@@ -12,10 +12,12 @@ declare module 'vue' {
     GlareCard: typeof import('./src/components/ui/glare-card/GlareCard.vue')['default']
     GlobalLoader: typeof import('./src/components/GlobalLoader.vue')['default']
     Marquee: typeof import('./src/components/ui/marquee/Marquee.vue')['default']
+    ParticlesBg: typeof import('./src/components/ui/particles-bg/ParticlesBg.vue')['default']
     ReviewCard: typeof import('./src/components/ui/marquee/ReviewCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShProductCard: typeof import('./src/components/shProductCard.vue')['default']
     ToggleFavoriteBtn: typeof import('./src/components/ToggleFavoriteBtn.vue')['default']
+    Vortex: typeof import('./src/components/ui/vortex/Vortex.vue')['default']
   }
 }
