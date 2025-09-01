@@ -1,0 +1,1 @@
+import{bp as c,r as o}from"./index-CYZvQ5mV.js";const i=c("social",()=>{const e=o(null);return{selectedSocial:e,setSelectedSocial:l=>{e.value=l},clearSelectedSocial:()=>{e.value=null}}},{persist:{key:"jiovolley-social",pick:["selectedSocial"]}});export{i as u};
