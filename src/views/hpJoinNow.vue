@@ -4,7 +4,7 @@
 
     <div class="info-wrapper">
       <h1 class="font-weight-bold slogan-title mb-5">一球入魂，熱血開打</h1>
-      <h3>加入我們，找到和你一樣熱愛排球的夥伴，享受揮灑汗水的樂趣。</h3>
+      <h3 style="font-size: 1.2rem">加入我們，找到和你一樣熱愛排球的夥伴，享受揮灑汗水的樂趣。</h3>
       <v-btn rounded="xl" width="120" height="40" class="mt-10" to="/logInSingUp">現在註冊</v-btn>
     </div>
   </v-container>

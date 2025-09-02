@@ -83,6 +83,13 @@
           title="回首頁"
           class="listItems"
         ></v-list-item>
+        <v-list-item
+          link
+          prepend-icon="mdi-logout"
+          @click="logout"
+          title="登出"
+          class="listItems"
+        ></v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-btn
@@ -102,11 +109,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useDisplay } from 'vuetify'
+import { useRouter } from 'vue-router'
 import userService from '@/services/userService'
+import { useUserStore } from '@/stores/userStore'
 
+const user = useUserStore()
 const display = useDisplay()
 const drawer = ref(true)
 const userName = ref('')
+const router = useRouter()
 
 const getUserName = async () => {
   try {
@@ -123,6 +134,22 @@ const getUserName = async () => {
       },
     })
   }
+}
+
+const logout = async () => {
+  try {
+    await userService.logout()
+  } catch (error) {
+    console.error(error)
+  }
+  user.logout()
+  router.push('/')
+  createSnackbar({
+    text: '登出成功！',
+    snackbarProps: {
+      color: 'green',
+    },
+  })
 }
 
 onMounted(() => {
@@ -158,7 +185,7 @@ onMounted(() => {
   color: white;
 }
 
-@media (min-width: 768) {
+@media (min-width: 768px) {
   .listItems {
     margin-left: 20px;
   }

@@ -31,7 +31,7 @@
           >
           <v-avatar
             rounded="0"
-            image="@/assets/images/passing.png"
+            :image="userInfo.avatar"
             style="border: 2px solid black"
             class="mr-7 btn-hover"
           ></v-avatar>
@@ -42,17 +42,17 @@
           <h1 class="card-title mb-3 ml-7">球員檔案 Player Information</h1>
           <v-card class="pa-5 card-memberPage mb-5 ml-7" color="#fdd000">
             <v-row>
-              <v-col cols="4">
+              <v-col cols="12" md="4">
                 <v-img
                   style="border: 2px solid black"
                   :src="userInfo.avatar"
                   height="320"
                   width="250"
-                  class="mt-1"
+                  class="mt-1 mx-auto mx-md-0"
                   cover
                 ></v-img>
               </v-col>
-              <v-col cols="8" class="ml-n5">
+              <v-col cols="12 " md="8" class="ml-md-n5">
                 <v-col cols="12">
                   <div class="d-flex justify-space-between">
                     <h1 class="font-weight-bold mt-n1 mb-1" style="font-size: 2rem">
@@ -74,38 +74,18 @@
                   </div>
                   <h3>{{ userInfo.gender }}．{{ userInfo.skillLevel }}．</h3>
                   <h3>{{ userInfo.email }}</h3>
-                  <div class="d-flex justify-space-between mt-5">
-                    <div>
-                      <v-card class="card-border mr-n4 text-center" width="130" rounded="0">
-                        <v-card-title class="font-weight-bold text-h5">{{
-                          socialsAttendedNum
+                  <v-row class="mt-3">
+                    <v-col cols="6" md="3" v-for="(item, idx) in cardItems" :key="idx">
+                      <v-card class="card-border text-center" rounded="0" width="130">
+                        <v-card-title class="font-weight-bold" style="font-size: 1.5rem">{{
+                          item.title
                         }}</v-card-title>
-                        <v-card-text>打過的 play </v-card-text>
+                        <v-card-text>{{ item.text }}</v-card-text>
                       </v-card>
-                    </div>
-                    <div>
-                      <v-card class="card-border mr-n4 text-center" width="130" rounded="0">
-                        <v-card-title class="font-weight-bold text-h5">{{
-                          socialsHostedNum
-                        }}</v-card-title>
-                        <v-card-text>揪過的 play </v-card-text>
-                      </v-card>
-                    </div>
-                    <div>
-                      <v-card class="card-border mr-n4 text-center" width="130" rounded="0">
-                        <v-card-title class="font-weight-bold text-h5">{{ joinAgo }}</v-card-title>
-                        <v-card-text>加入揪排咖 </v-card-text>
-                      </v-card>
-                    </div>
-                    <div>
-                      <v-card class="card-border text-center" width="130" rounded="0">
-                        <v-card-title class="font-weight-bold text-h5">{{ joinAgo }}</v-card-title>
-                        <v-card-text>加入揪排咖 </v-card-text>
-                      </v-card>
-                    </div>
-                  </div>
+                    </v-col>
+                  </v-row>
                   <div>
-                    <h1 class="font-weight-bold mt-6" style="font-size: 1.3rem">
+                    <h1 class="font-weight-bold mt-10" style="font-size: 1.3rem">
                       {{ userInfo.quote }}
                     </h1>
                   </div>
@@ -139,7 +119,7 @@
         </v-col>
 
         <v-col cols="12" md="4">
-          <div class="card-title mb-2 ml-7">出席統計 Presence Rate</div>
+          <div class="card-title mb-2 ml-7 mt-7 mt-md-0">出席統計 Presence Rate</div>
           <v-card class="card-memberPage mr-10 mr-md-7 ml-7 mb-7" height="225">
             <v-pie
               :items="currentItems"
@@ -183,7 +163,7 @@
             </v-pie>
           </v-card>
         </v-col>
-        <v-col cols="11" md="8" class="ml-md-n7 ml-7 mr-7 mb-8 mb-md-0">
+        <v-col cols="10" md="8" class="ml-md-n7 ml-7 mr-7 mb-8 mb-md-0">
           <div class="d-flex justify-space-between">
             <h1 class="card-title mb-2">收藏的球場 Favorite Courts</h1>
             <v-tooltip text="編輯收藏" location="bottom">
@@ -204,15 +184,15 @@
           <v-card
             height="225"
             v-if="!favoriteVenues || favoriteVenues.length === 0"
-            class="card-memberPage"
+            class="card-memberPage d-flex align-center justify-center"
           >
-            <v-card-title style="font-size: 1.5rem; line-height: 200px" class="text-center">
+            <h1 style="font-size: 1.5rem" class="text-center">
               你還沒有收藏任何球場喔~快到
               <router-link to="/venueList"
                 ><span style="text-decoration: underline">球場列表</span></router-link
               >
               搜尋喜歡的球場吧！
-            </v-card-title>
+            </h1>
           </v-card>
           <swiper
             :slidesPerView="'4'"
@@ -284,6 +264,25 @@ const currentItems = toRef(() =>
         { id: 2, title: '缺席', value: 10, color: '#f1f1f1' },
       ]
 )
+
+const cardItems = ref([
+  {
+    title: socialsAttendedNum,
+    text: '打過的 play',
+  },
+  {
+    title: socialsHostedNum,
+    text: '揪過的 play',
+  },
+  {
+    title: joinAgo,
+    text: '加入揪排咖',
+  },
+  {
+    title: joinAgo,
+    text: '加入揪排咖',
+  },
+])
 
 // 我的排球行事曆
 const calendar = ref()

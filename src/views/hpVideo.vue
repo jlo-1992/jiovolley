@@ -19,7 +19,7 @@
           />
           <div id="slogan">
             一躍而起，就是現在！<br />
-            你的排球熱情 -<span class="slogan-english">JIOVOLLEY</span><br />
+            你的排球熱情—<span class="slogan-english">JIOVOLLEY</span><br />
             揪排咖跟你一起實現！<br />
             <v-btn
               class="btn"

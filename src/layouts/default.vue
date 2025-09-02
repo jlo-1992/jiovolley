@@ -50,7 +50,7 @@
             v-if="user.isLoggedIn"
             style="border: 3px solid #fdd000"
             size="large"
-            class="mr-2"
+            class="mr-2 mr-md-3"
           >
             <v-img :src="userAvatar"></v-img>
           </v-avatar>
@@ -100,7 +100,7 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import userService from '@/services/userService'
 import { useUserStore } from '@/stores/userStore'
@@ -132,6 +132,7 @@ const leftNavItems = computed(() => {
 // })
 
 const getAvatar = async () => {
+  if (!user.isLoggedIn) return
   try {
     const { data } = await userService.profile()
     userAvatar.value = data.user.avatar
@@ -165,6 +166,16 @@ const logout = async () => {
 onMounted(() => {
   getAvatar()
 })
+
+watch(
+  () => user.isLoggedIn, // 監聽 useUserStore 中的 isLoggedIn 屬性
+  (newValue, oldValue) => {
+    // 當 isLoggedIn 從 false 變為 true 時，執行 getAvatar()
+    if (newValue === true && oldValue === false) {
+      getAvatar()
+    }
+  }
+)
 </script>
 
 <style scoped lang="scss">

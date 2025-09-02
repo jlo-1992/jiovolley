@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="bg-light">
+  <v-container id="venueCommentBoard" fluid class="bg-light">
     <v-row>
       <v-col cols="12" md="7" class="mt-12">
         <div class="upper-wrapper d-flex mb-5">
@@ -47,28 +47,27 @@
           <v-text-field
             v-model="comment.value.value"
             :error-messages="comment.errorMessage.value"
-            :prepend-icon="icon"
             type="text"
             variant="filled"
             clearable
             label="請輸入留言"
-            @click:prepend="changeIcon"
           ></v-text-field>
           <v-btn
             rounded="lg"
             class="btn btn-reply mt-2 ml-5"
             type="submit"
             :disabled="isCommentSubmitting"
+            @click="!isLoggedIn ? openLoginDialog() : ''"
             >留言</v-btn
           >
         </v-form>
 
         <div v-for="(comment, idx) in sortedComments" :key="idx" class="comment-wrapper mb-8 mt-5">
           <v-row>
-            <v-col cols="1" class="mt-1">
-              <v-icon>mdi-emoticon</v-icon>
+            <v-col cols="2" md="1" class="mt-1">
+              <v-avatar size="large" class="ml-md-1 ml-2" :image="comment.userAvatar"></v-avatar>
             </v-col>
-            <v-col cols="10">
+            <v-col cols="9" md="10">
               <div class="d-flex align-center">
                 <div class="mr-3 font-weight-bold mb-1" style="font-size: 1.2rem">
                   {{ comment.userName }}
@@ -79,15 +78,20 @@
               <div class="d-flex mt-4 mb-4">
                 <v-icon
                   class="icon-like mr-1"
-                  @click="toggleLike(comment)"
+                  @click="!isLoggedIn ? openLoginDialog() : toggleLike(comment)"
                   :color="comment.likedBy?.includes(user._id) ? 'blue' : 'grey'"
                   >mdi-thumb-up-outline</v-icon
                 >
                 <span class="likes-number mt-2">{{ comment.likes }}</span>
-                <v-icon class="icon-report ml-5 mr-6" @click="openDialog(comment)"
+                <v-icon
+                  class="icon-report ml-5 mr-6"
+                  @click="!isLoggedIn ? openLoginDialog() : openDialog(comment)"
                   >mdi-flag-outline</v-icon
                 >
-                <v-btn class="btn btn-reply" rounded="lg" @click="showReplyForm(comment._id)"
+                <v-btn
+                  class="btn btn-reply"
+                  rounded="lg"
+                  @click="!isLoggedIn ? openLoginDialog() : showReplyForm(comment._id)"
                   >回覆</v-btn
                 >
               </div>
@@ -109,12 +113,10 @@
                   <v-text-field
                     v-model="reply.value.value"
                     :error-messages="reply.errorMessage.value"
-                    :prepend-icon="icon"
                     type="text"
                     variant="filled"
                     clearable
                     label="請輸入回覆"
-                    @click:prepend="changeIcon"
                   ></v-text-field>
                   <div class="d-flex justify-end">
                     <v-btn
@@ -133,15 +135,17 @@
               <div v-if="comment.showReplies && comment.repliesCount > 0">
                 <div v-for="reply in comment.replies" :key="reply._id" class="reply-wrapper mt-4">
                   <v-row>
-                    <v-col cols="1">
-                      <v-icon>mdi-emoticon</v-icon>
+                    <v-col cols="2" md="1">
+                      <v-avatar :image="reply.userAvatar"></v-avatar>
                     </v-col>
                     <v-col cols="10">
                       <div class="d-flex align-center">
-                        <div class="mr-3 font-weight-bold text-h6">{{ reply.userName }}</div>
+                        <div class="mr-3 font-weight-bold" style="font-size: 1.2rem">
+                          {{ reply.userName }}
+                        </div>
                         <div style="color: gray">{{ reply.replyTimeAgo }}</div>
                       </div>
-                      <div>{{ reply.reply }}</div>
+                      <div style="font-size: 1.2rem">{{ reply.reply }}</div>
                       <v-icon
                         class="icon-like mt-2 mr-1"
                         @click="toggleLikeReply(reply, comment)"
@@ -209,6 +213,15 @@
       </v-card>
     </v-form>
   </v-dialog>
+  <v-dialog v-model="loginDialog.open" persistent width="360">
+    <v-card class="card-dialog">
+      <v-card-title class="text-center mt-3">{{ loginDialog.message }}</v-card-title>
+      <v-icon-btn icon="mdi-close" @click="closeLoginDialog" class="btn-close"></v-icon-btn>
+      <v-card-actions>
+        <v-btn class="btn mx-auto mt-3" @click="navigateToLogin">前往登入</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -256,6 +269,29 @@ const selectOrder = (item) => {
   orderSelection.value = item
 }
 
+const loginDialog = ref({
+  // 控制對話框開關
+  open: false,
+  message: '請先登入才能執行功能喔！',
+})
+
+const closeLoginDialog = () => {
+  loginDialog.value.open = false
+}
+
+const openLoginDialog = () => {
+  loginDialog.value.open = true
+}
+
+const navigateToLogin = () => {
+  dialog.value.open = false
+  router.push({
+    path: '/logInSingUp',
+    query: { redirect: route.fullPath },
+    hash: '#venueCommentBoard',
+  })
+}
+
 const sortedComments = computed(() => {
   const commentsCopy = [...comments.value]
   if (orderSelection.value.value === 'newest') {
@@ -265,17 +301,6 @@ const sortedComments = computed(() => {
   }
   return commentsCopy
 })
-
-const icons = [
-  'mdi-emoticon',
-  'mdi-emoticon-cool',
-  'mdi-emoticon-dead',
-  'mdi-emoticon-excited',
-  'mdi-emoticon-happy',
-  'mdi-emoticon-neutral',
-  'mdi-emoticon-sad',
-  'mdi-emoticon-tongue',
-]
 
 const props = defineProps({
   venueId: {
@@ -337,10 +362,12 @@ const getComments = async () => {
           ? (await userService.getUserById(comment.user)).data.user
           : null
         const userName = userData?.name || '未知使用者' // 取得該留言的所有回覆
+        const userAvatar = userData?.avatar
 
         return {
           ...comment,
           userName,
+          userAvatar,
           CommentTimeAgo: dayjs(comment.createdAt).fromNow(),
           repliesCount: comment.repliesCount || 0,
           replies: [],
@@ -365,15 +392,6 @@ const getComments = async () => {
 // handleSubmit(處理function)
 // values 表單所有欄位的值
 const submitComment = handleCommentSubmit(async (values) => {
-  if (!isLoggedIn.value) {
-    createSnackbar({
-      text: '請先登入才能留言喔！',
-      snackbarProps: {
-        color: 'red',
-      },
-    })
-    return router.push('/logInSingUp')
-  }
   try {
     await venueCommentService.create(props.venueId, {
       comment: values.comment,
@@ -447,9 +465,11 @@ const getReplies = async (comment) => {
           ? (await userService.getUserById(reply.user)).data.user
           : null
         const replyUserName = replyUserData?.name || '未知使用者'
+        const replyUserAvatar = replyUserData?.avatar
         return {
           ...reply,
           userName: replyUserName,
+          userAvatar: replyUserAvatar,
           replyTimeAgo: dayjs(reply.createdAt).fromNow(),
         }
       })
@@ -482,16 +502,6 @@ const toggleShowReplies = async (comment) => {
 // handleSubmit(處理function)
 // values 表單所有欄位的值
 const submitReplies = handleReplySubmit(async (values) => {
-  if (!isLoggedIn.value) {
-    createSnackbar({
-      text: '請先登入才能留言喔！',
-      snackbarProps: {
-        color: 'red',
-      },
-    })
-    return router.push('/logInSingUp')
-  }
-
   // 檢查 activeReplyId 是否存在
   if (!activeReplyId.value) {
     throw new Error('無法取得回覆的留言 ID')
@@ -533,16 +543,6 @@ const submitReplies = handleReplySubmit(async (values) => {
 })
 
 const toggleLikeReply = async (reply) => {
-  if (!isLoggedIn.value) {
-    createSnackbar({
-      text: '請先登入才能按讚喔！',
-      snackbarProps: {
-        color: 'red',
-      },
-    })
-    return router.push('/logInSingUp')
-  }
-
   try {
     const { data } = await venueCommentReplyService.likeReply(reply._id)
 
@@ -576,15 +576,6 @@ const toggleLikeReply = async (reply) => {
 }
 
 const toggleLike = async (comment) => {
-  if (!isLoggedIn.value) {
-    createSnackbar({
-      text: '請先登入才能按讚喔！',
-      snackbarProps: {
-        color: 'red',
-      },
-    })
-    return router.push('/logInSingUp')
-  }
   const commentId = comment._id
   try {
     const { data } = await venueCommentService.likeComment(commentId)
@@ -617,16 +608,6 @@ const toggleLike = async (comment) => {
 }
 
 const openDialog = (comment) => {
-  if (!isLoggedIn.value) {
-    createSnackbar({
-      text: '請先登入才能檢舉留言喔！',
-      snackbarProps: {
-        color: 'red',
-      },
-    })
-    return router.push('/logInSingUp')
-  }
-
   dialog.value.open = true
   dialog.value.id = comment._id
 }
@@ -675,14 +656,6 @@ const submitReport = handleReportSubmit(async (values) => {
   }
 })
 
-const iconIndex = ref(0)
-const icon = computed(() => {
-  return icons[iconIndex.value]
-})
-function changeIcon() {
-  iconIndex.value === icons.length - 1 ? (iconIndex.value = 0) : iconIndex.value++
-}
-
 onMounted(() => {
   getComments()
   getVenues()
@@ -693,6 +666,7 @@ onMounted(() => {
 .card-dialog {
   border: 2px solid black;
   background: #f1f1f1;
+  padding: 25px 25px 15px 25px;
 }
 .btn-red {
   background-color: red;
@@ -754,6 +728,20 @@ onMounted(() => {
 
 .card-recommandVenues:hover {
   box-shadow: 3px 6px 1px black;
+}
+
+.btn-close {
+  background-color: #fdd000;
+  border: 2px solid black;
+  box-shadow: 2px 4px 1px black;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 8px;
+}
+.btn-close:hover {
+  box-shadow: none;
+  transform: translate(3px, 3px);
 }
 
 @media (min-width: 768px) {
