@@ -17,7 +17,7 @@
             <div class="overlay-text">
               <h1 class="text-h5 card-title">{{ venue.name }}</h1>
               <h2 class="venue-address">{{ venue.city }}{{ venue.address }}</h2>
-              <v-divider :thickness="1" opacity="100" class="mr-5 mt-8 mb-3 divider"></v-divider>
+              <v-divider :thickness="1" opacity="100" class="mr-5 mt-3 mb-3 divider"></v-divider>
               <v-btn class="btn ml-3" rounded="lg" :to="`/venueSingle/${venue._id}`"
                 >點我看更多球場資訊</v-btn
               >
@@ -72,14 +72,13 @@ onMounted(() => {
 }
 
 .title-background {
-  font-family: 'Cooper Black', sans-serif;
-  color: #f1f1f1;
-
-  font-size: 12rem;
+  font-family: 'Knewave', system-ui;
+  color: rgba(253, 207, 0, 1.396078);
+  font-size: 6rem;
   position: absolute;
-  left: 3%;
-  top: -75px;
-  transform: rotateX(60deg);
+  left: 13%;
+  top: 13px;
+  transform: rotateX(54deg) rotateY(-7deg);
 }
 
 h1 {
@@ -119,16 +118,15 @@ h1 {
 }
 
 .btn {
-  position: absolute; // 絕對定位
-  bottom: 15px; // 距離底部 20px
-  left: 28%; // 從左邊開始 50%
-  transform: translateX(-50%); // 往左平移自身寬度的一半，實現水平置中
-  // 其餘按鈕樣式
+  position: absolute;
+  bottom: 25px;
+  left: 28%;
+  transform: translateX(-50%);
 }
 
 .btn:hover {
-  bottom: 12px; // 距離底部 20px
-  left: 29%;
+  bottom: 22px;
+  left: 31%;
 }
 
 .card {

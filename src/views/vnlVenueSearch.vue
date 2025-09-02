@@ -369,7 +369,13 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-image: repeating-linear-gradient(-45deg, black 0, black 20px, gray 20px, gray 23px);
+  background-image: repeating-linear-gradient(
+    -75deg,
+    black 0,
+    black 35px,
+    #f1f1f1 35px,
+    #fdd000 37px
+  );
 }
 
 .bg-dark1 {

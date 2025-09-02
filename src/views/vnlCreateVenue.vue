@@ -383,7 +383,7 @@ h3 {
   // box-shadow: 25px 25px 1px black;
   z-index: 2;
   margin-bottom: 50px;
-  border: 2px solid black;
+  border: 6px solid black;
 }
 
 .bg-dark {

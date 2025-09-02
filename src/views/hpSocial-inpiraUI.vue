@@ -5,6 +5,7 @@
       <v-row justify="center">
         <v-col cols="12" md="12" class="mb-md-10 ml-md-15 d-flex justify-space-between">
           <h1 class="page-title">選好場次馬上報名</h1>
+          <h1 class="title-background">Socials</h1>
           <v-btn class="btn-outlined mt-md-10 mt-9" variant="outlined" to="/venueList"
             >更多場次</v-btn
           >
@@ -116,6 +117,16 @@ onMounted(() => {
   // background: black;
   position: relative;
   background: url('@/assets/images/banner/volleyballCourt.jpeg') center/cover;
+}
+
+.title-background {
+  font-family: 'Knewave', system-ui;
+  color: rgba(253, 207, 0);
+  font-size: 6rem;
+  position: absolute;
+  left: 1%;
+  top: 67px;
+  transform: rotateX(54deg) rotateY(-7deg);
 }
 
 .page-title {

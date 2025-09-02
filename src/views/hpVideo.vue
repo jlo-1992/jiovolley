@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-0 bg-light" style="background-color: white">
+  <v-container fluid class="pa-0 bg-light" style="background-color: black">
     <v-row no-gutters>
       <v-col cols="12">
         <div class="video-container" ref="videoContainer">

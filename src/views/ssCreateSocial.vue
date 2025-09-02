@@ -447,7 +447,7 @@ watch(selectedCity, () => {
 .card {
   padding: 15px;
   background-color: white;
-  border: 2px solid black;
+  border: 6px solid black;
   z-index: 2;
   margin-bottom: 50px;
 }
@@ -464,9 +464,9 @@ watch(selectedCity, () => {
   background-image: repeating-linear-gradient(
     -75deg,
     black 0,
-    black 40px,
-    #f1f1f1 40px,
-    #fdd000 42px
+    black 35px,
+    #f1f1f1 35px,
+    #fdd000 37px
   );
 }
 

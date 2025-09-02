@@ -137,7 +137,7 @@
               <template v-slot:center>
                 <div class="text-center">
                   <div class="card-title text-h5">出席率</div>
-                  <div class="opacity-70 text-h4 mt-1 mb-n1">90%</div>
+                  <div class="opacity-70 text-h4 mt-1 mb-n1">{{ userInfo.attendanceRate }}%</div>
                 </div>
               </template>
 
@@ -240,9 +240,10 @@ dayjs.locale('zh-tw')
 
 const modules = [Navigation]
 const display = useDisplay()
-let joinAgo = ref('')
-let socialsHostedNum = ref(0)
-let socialsAttendedNum = ref(0)
+const joinAgo = ref('')
+const socialsHostedNum = ref(0)
+const socialsAttendedNum = ref(0)
+
 const favoriteVenues = ref([])
 const defaultVenueImage = ref('@/assets/images/gabi hitting.jpg.jpg')
 
@@ -254,10 +255,16 @@ const currentItems = toRef(() =>
         {
           id: 1,
           title: '出席',
-          value: 90,
+          value: userInfo.value.attendanceRate,
           color: '#ffd000',
         },
-        { id: 2, title: '缺席', value: 10, color: '#f1f1f1', pattern: 'url(#pattern-0)' },
+        {
+          id: 2,
+          title: '缺席',
+          value: 100 - userInfo.value.attendanceRate,
+          color: '#f1f1f1',
+          pattern: 'url(#pattern-0)',
+        },
       ]
     : [
         { id: 1, title: '出席', value: 90, color: '#353D42' },
