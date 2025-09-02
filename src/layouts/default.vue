@@ -16,7 +16,7 @@
         </v-app-bar-title>
         <router-link to="/member">
           <v-avatar v-if="user.isLoggedIn" style="border: 3px solid #fdd000" class="mr-2">
-            <v-img src="@/assets//images//userProfile/ryujji.jpg"></v-img>
+            <v-img :src="userAvatar"></v-img>
           </v-avatar>
         </router-link>
         <v-btn icon="mdi-menu" @click.stop="drawer = !drawer" color="#f1f1f1"></v-btn>
@@ -52,7 +52,7 @@
             size="large"
             class="mr-2"
           >
-            <v-img src="@/assets//images//userProfile/ryujji.jpg"></v-img>
+            <v-img :src="userAvatar"></v-img>
           </v-avatar>
         </router-link>
 
@@ -100,7 +100,7 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import userService from '@/services/userService'
 import { useUserStore } from '@/stores/userStore'
@@ -111,6 +111,7 @@ const user = useUserStore()
 
 const display = useDisplay()
 const drawer = ref(false)
+const userAvatar = ref('')
 
 const router = useRouter()
 const isHome = computed(() => router.path === '/')
@@ -126,9 +127,24 @@ const navItems = computed(() => [
 const leftNavItems = computed(() => {
   return navItems.value.filter((item) => item.show).slice(0, 4)
 })
-const rightNavItems = computed(() => {
-  return navItems.value.filter((item) => item.show).slice(4)
-})
+// const rightNavItems = computed(() => {
+//   return navItems.value.filter((item) => item.show).slice(4)
+// })
+
+const getAvatar = async () => {
+  try {
+    const { data } = await userService.profile()
+    userAvatar.value = data.user.avatar
+    console.log('userAvatar', userAvatar)
+  } catch (error) {
+    createSnackbar({
+      text: '取得大頭貼失敗，請重新整理或稍後再試。',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+}
 
 const logout = async () => {
   try {
@@ -145,6 +161,10 @@ const logout = async () => {
     },
   })
 }
+
+onMounted(() => {
+  getAvatar()
+})
 </script>
 
 <style scoped lang="scss">

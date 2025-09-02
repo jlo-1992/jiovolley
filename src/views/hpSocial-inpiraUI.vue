@@ -3,7 +3,7 @@
     <div class="overlay-background"></div>
     <v-container fluid>
       <v-row justify="center">
-        <v-col cols="12" md="12" class="mb-md-5 ml-md-11 d-flex justify-space-between">
+        <v-col cols="12" md="12" class="mb-md-10 ml-md-15 d-flex justify-space-between">
           <h1 class="page-title">選好場次馬上報名</h1>
           <v-btn class="btn-outlined mt-md-10 mt-9" variant="outlined" to="/venueList"
             >更多場次</v-btn
@@ -168,7 +168,6 @@ onMounted(() => {
   border-right: 1px solid vars.$secondary-color;
   padding-top: 10px;
   padding-left: 20px;
-  // padding-right: 10px;
   width: 50%;
   overflow: hidden;
   white-space: nowrap;
@@ -305,7 +304,7 @@ onMounted(() => {
   }
 
   .btn-outlined {
-    margin-right: 60px;
+    margin-right: 100px;
     height: 50px;
     width: 150px;
     font-size: 1.3rem !important;

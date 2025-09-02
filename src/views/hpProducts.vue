@@ -19,7 +19,7 @@
           >
             <v-card
               width="332"
-              height="438s"
+              height="438"
               class="ma-2 card d-flex flex-column pb-10"
               rounded="lg"
               to="/shop"

@@ -13,7 +13,7 @@
       :key="index"
       :class="
         cn(
-          'flex shrink-0 justify-around [gap:var(--gap)]',
+          'flex shrink-0 [--duration:60s] justify-around [gap:var(--gap)]',
           vertical ? 'animate-marquee-vertical flex-col' : 'animate-marquee flex-row',
           pauseOnHover ? 'group-hover:[animation-play-state:paused]' : ''
         )
