@@ -1,0 +1,1 @@
+import{bp as n,r as l}from"./index-CRyPVaQa.js";const r=n("venue",()=>{const e=l(null);return{selectedVenue:e,setSelectedVenue:t=>{e.value=t},clearSelectedVenue:()=>{e.value=null}}},{persist:{key:"jiovolley-venue",pick:["selectedVenue"]}});export{r as u};
