@@ -77,7 +77,7 @@
                   <v-row class="mt-3">
                     <v-col cols="6" md="3" v-for="(item, idx) in cardItems" :key="idx">
                       <v-card class="card-border text-center" rounded="0" width="130">
-                        <v-card-title class="font-weight-bold" style="font-size: 1.5rem">{{
+                        <v-card-title class="font-weight-bold" style="font-size: 1.4rem">{{
                           item.title
                         }}</v-card-title>
                         <v-card-text>{{ item.text }}</v-card-text>
