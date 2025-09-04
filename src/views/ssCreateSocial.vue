@@ -4,6 +4,8 @@
     <v-card class="mx-auto mt-10 pb-15 pt-5 mb-15 card" rounded="md">
       <v-row justify="center" class="mt-5">
         <v-col cols="10" md="8" lg="8" xl="8" class="text-center">
+          <v-img class="animate-icon" src="@/assets//images/animate-icons/beach-ball.png"></v-img>
+          <v-img class="animate-icon2" src="@/assets//images/animate-icons/beach-ball.png"></v-img>
           <h1 class="mb-3 page-title" id="createSocial">我要當主揪！</h1>
           <h3 class="subtitle" style="color: #353d42">
             沒有時間、球場、程度適合你的時段嗎？ 是時候跳出來當主揪建立一個最適合你的打 play
@@ -529,6 +531,28 @@ watch(selectedCity, () => {
   transform: translate(3px, 3px);
 }
 
+.animate-icon,
+.animate-icon2 {
+  position: absolute;
+  z-index: 3;
+}
+
+.animate-icon {
+  top: 0%;
+  left: -8%;
+  width: 100px;
+  height: 100px;
+  transform: rotate(45deg);
+}
+
+.animate-icon2 {
+  top: 50%;
+  right: -10%;
+  width: 100px;
+  height: 100px;
+  transform: rotate(45deg);
+}
+
 @media (min-width: 768px) {
   .card {
     width: 1550px;
@@ -540,6 +564,22 @@ watch(selectedCity, () => {
   .page-title {
     font-size: 2.5rem;
     font-weight: bold;
+  }
+
+  .animate-icon {
+    top: 40%;
+    left: -8%;
+    width: 300px;
+    height: 300px;
+    transform: rotate(45deg);
+  }
+
+  .animate-icon2 {
+    top: -10%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    transform: rotate(45deg);
   }
 }
 </style>

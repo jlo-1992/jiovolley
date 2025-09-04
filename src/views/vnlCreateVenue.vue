@@ -4,6 +4,8 @@
     <v-card class="card mx-auto mt-10 pb-16 pt-5" rounded="lg">
       <v-row justify="center">
         <v-col cols="12" md="8" lg="8" xl="8" class="text-center">
+          <v-img class="animate-icon" src="@/assets//images/animate-icons/beach-ball.png"></v-img>
+          <v-img class="animate-icon2" src="@/assets//images/animate-icons/beach-ball.png"></v-img>
           <h1 class="mb-3 mt-10 page-title">找不到心儀的球場嗎？</h1>
           <h3 class="subtitle" style="color: #353d42">
             建立一座新的球場吧！<br />
@@ -384,6 +386,8 @@ h3 {
   z-index: 2;
   margin-bottom: 50px;
   border: 6px solid black;
+  position: relative;
+  overflow: hidden;
 }
 
 .bg-dark {
@@ -449,6 +453,28 @@ h3 {
   align-items: center;
 }
 
+.animate-icon,
+.animate-icon2 {
+  position: absolute;
+  z-index: 3;
+}
+
+.animate-icon {
+  top: 0%;
+  left: -10%;
+  width: 100px;
+  height: 100px;
+  transform: rotate(45deg);
+}
+
+.animate-icon2 {
+  top: 50%;
+  right: -10%;
+  width: 100px;
+  height: 100px;
+  transform: rotate(45deg);
+}
+
 @media (min-width: 768px) {
   .subtitle {
     font-size: 1.2rem;
@@ -460,6 +486,22 @@ h3 {
   }
   .card {
     width: 1450px;
+  }
+
+  .animate-icon {
+    top: 2%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    transform: rotate(45deg);
+  }
+
+  .animate-icon2 {
+    top: 50%;
+    right: -15%;
+    width: 400px;
+    height: 400px;
+    transform: rotate(45deg);
   }
 }
 </style>
