@@ -1,79 +1,28 @@
-# Vuetify (Default)
+# JIOVOLLEY：排球活動線上揪團平台 🏐
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+## 專案簡介 (Project Overview)
 
-## ❗️ Important Links
+**JIOVOLLEY** 是一個專為排球愛好者和活動發起人設計的**線上揪團與報名管理應用程式**。
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+本專案旨在解決傳統上使用群組聊天軟體手動統計排球活動報名人數的繁瑣問題，提供一個**集中、高效且自動化**的平台，讓使用者能輕鬆發布、參與及管理排球活動。
 
-## 💿 Install
+本應用程式採用現代 **單頁應用程式 (SPA)** 技術，並部署於 **GitHub Pages**，確保使用者能快速、流暢地在任何裝置上使用。
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+---
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
+## 網站功能 (Features)
 
-After completing the installation, your environment is ready for Vuetify development.
+JIOVOLLEY 提供以下核心功能，讓排球活動的組織與參與變得更簡單：
 
-## ✨ Features
-
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
-
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
-
-## 💡 Usage
-
-This section covers how to start the development server and build your project for production.
-
-### Starting the Development Server
-
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
-
-```bash
-yarn dev
-```
-
-(Repeat for npm, pnpm, and bun with respective commands.)
-
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
-
-### Building for Production
-
-To build your project for production, use:
-
-```bash
-yarn build
-```
-
-(Repeat for npm, pnpm, and bun with respective commands.)
-
-Once the build process is completed, your application will be ready for deployment in a production environment.
-
-## 💪 Support Vuetify Development
-
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
-
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
-
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
-
-Copyright (c) 2016-present Vuetify, LLC
+1.  **活動發布與創建 (Event Publishing)**
+    * 提供直觀的介面，讓發起人**快速發布**新的排球活動。
+    * 可詳細設定活動資訊，包括：日期、時間、地點、費用、預計人數、活動強度（如：歡樂場、中階、進階）等。
+2.  **線上報名與管理 (Online Sign-up & Management)**
+    * 參與者可直接在網頁上點擊按鈕進行**報名或取消**，操作便捷。
+    * 系統會**即時更新**報名者清單和剩餘名額，方便發起人掌握狀況。
+3.  **參與者名單管理 (Participant List)**
+    * 發起人可一目瞭然地查看**完整的報名者名單**。
+4.  **活動歷史記錄 (Historical Events)**
+    * 用戶可以查詢過去參與或舉辦過的排球活動記錄。
+5.  **跨裝置響應式設計 (Responsive Design)**
+    * 網頁版面適用於桌機、平板及手機等不同尺寸的裝置。
